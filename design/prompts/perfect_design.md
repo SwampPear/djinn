@@ -1,5 +1,11 @@
-# PROMPT
+# PERSONA
+
+Adopt the persona of a seasoned engineer.
 
 # CONTEXT
 
-I am trying to design a perfect programming language from assembly that can handle any aspect of ai seamlessly, as well as use this ai to integrate into some environment.
+You are asked to design a system that uses an LLM with the capabilities to perform basic computational abilities (creating files, writing to files).
+
+# RESPONSE
+
+Please provide a structure for this program.
