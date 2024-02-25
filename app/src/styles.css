@@ -1,0 +1,123 @@
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color: #0f0f0f;
+  background-color: transparent;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  --mac-window-border-radius: .5rem;
+  --mac-window-button-red: rgb(251,97,90);
+  --mac-window-button-yellow: rgb(253,191,64);
+  --mac-window-button-green: rgb(52,199,73);
+  --mac-window-button-red-dark: rgb(147,55,45);
+  --mac-window-button-yellow-dark: rgb(159,116,35);
+  --mac-window-button-green-dark: rgb(23,106,31);
+  --gray: rgba(127, 127, 127, 0.25);
+}
+
+html,
+body {
+  background-color: #303030;
+  border: .25px solid var(--gray);
+  border-radius: var(--mac-window-border-radius);
+  margin: 0;
+  padding: 0;
+}
+
+.verb__container {
+  padding-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  text-align: center;
+  user-select: none;
+}
+
+.verb__titlebar {
+  height: 2.25rem;
+  border-top-left-radius: var(--mac-window-border-radius);
+  border-top-right-radius: var(--mac-window-border-radius);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  user-select: none;
+  width: 100vw;
+  z-index: 999;
+}
+
+.verb__titlebar__button__container {
+  align-items: center;
+  display: flex;
+  height: 2.25rem;
+  justify-content: space-around;
+  margin: 0 .5rem 0 .5rem;
+  user-select: none;
+  width: 3.75rem;
+}
+
+.verb__titlebar__close,
+.verb__titlebar__minimize,
+.verb__titlebar__maximize {
+  align-items: center;
+  border-radius: 50%;
+  display: flex;
+  height: .75rem;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  width: .75rem;
+}
+
+.verb__titlebar__close {
+  background-color: var(--mac-window-button-red);
+}
+
+.verb__titlebar__minimize {
+  background-color: var(--mac-window-button-yellow);
+}
+
+.verb__titlebar__maximize {
+  background-color: var(--mac-window-button-green);
+}
+
+.verb__titlebar__close > svg > path,
+.verb__titlebar__minimize > svg > path,
+.verb__titlebar__maximize > svg > path {
+  stroke: none;
+}
+
+.verb__titlebar__close > svg,
+.verb__titlebar__minimize > svg,
+.verb__titlebar__maximize > svg {
+  height: .75rem;
+  width: .75rem;
+}
+
+.verb__titlebar__close > svg > path,
+.verb__titlebar__minimize > svg > path,
+.verb__titlebar__maximize > svg > path {
+  stroke-linecap: round;
+}
+
+.verb__titlebar__button__container:hover > .verb__titlebar__close > svg > path {
+  stroke: var(--mac-window-button-red-dark);
+}
+
+.verb__titlebar__button__container:hover > .verb__titlebar__minimize > svg > path {
+  stroke: var(--mac-window-button-yellow-dark);
+}
+
+.verb__titlebar__button__container:hover > .verb__titlebar__maximize > svg > path {
+  stroke: var(--mac-window-button-green-dark);
+}
