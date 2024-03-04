@@ -1,23 +1,33 @@
-CC = g++
+# Rust project name
+PROJECT_NAME = my_project
 
-TARGET = app
-INCLUDE = include
-INCLUDE_PATH = src
-SUB_DIR = src src/mavan src/mavan/web src/mavan/web/http src/mavan/web/json src/mavan/core src/mavan/core/parser src/mavan/database src/mavan/log src/mavan/model
-CLEAN_DIR = src/mavan src/mavan/web src/mavan/web/http src/mavan/web/json src/mavan/core src/mavan/core/parser src/mavan/database src/mavan/log src/mavan/model
-#LIB = lib/*
+# Default target
+default: build
 
-#CFLAGS = -std=c++17 -Wall -shared -L. $(LIB) -I $(INCLUDE) -I $(INCLUDE_PATH)
-CFLAGS = -std=c++17 -Wall -w -L. $(LIB) -I $(INCLUDE) -I $(INCLUDE_PATH)
+# Build the project
+build:
+    cargo build
 
-all: $(TARGET)
+# Run the project
+run:
+    cargo run
 
-$(TARGET): $(wildcard *.cpp $(foreach fd, ${SUB_DIR}, $(fd)/*.cpp)) $(wildcard *.hpp $(foreach fd, ${SUB_DIR}, $(fd)/*.hpp))
-	$(CC) $(CFLAGS) -o $(TARGET) $(wildcard *.cpp $(foreach fd, ${SUB_DIR}, $(fd)/*.cpp))
-
+# Clean the project (remove build artifacts)
 clean:
-	$(RM) $(TARGET)
-	echo "$(wildcard *.hpp $(foreach fd, ${SUB_DIR}, $(fd)/*.hpp))"
+    cargo clean
 
-style:
-	cpplint $(wildcard *.cpp $(foreach fd, ${CLEAN_DIR}, $(fd)/*.cpp)) $(wildcard *.hpp $(foreach fd, ${CLEAN_DIR}, $(fd)/*.hpp))
+# Run tests
+test:
+    cargo test
+
+# Help target
+help:
+    @echo "Available targets:"
+    @echo "  build       Build the project"
+    @echo "  run         Run the project"
+    @echo "  clean       Clean the project (remove build artifacts)"
+    @echo "  test        Run tests"
+    @echo "  help        Display this help message"
+
+# Phony targets (targets that don't produce files)
+.PHONY: default build run clean test help

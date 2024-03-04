@@ -1,3 +1,6 @@
+use om::utils::cli;
+
+
 fn main() {
-    println!("Hello, world!");
+    cli::execute();
 }
