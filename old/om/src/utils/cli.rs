@@ -102,6 +102,14 @@ fn log(args: Vec<String>) -> io::Result<()> {
     Ok(())
 }
 
+/// Creates a file.
+///
+fn create_file() {}
+
+/// Reads a file.
+///
+fn create_file() {}
+
 pub fn execute() {
     log(vec![fmt_string("s\n", vec![&Style::Green, &Style::Bold])]);
 }
