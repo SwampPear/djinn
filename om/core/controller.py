@@ -1,6 +1,6 @@
 from enum import Enum
 from cli import CLI
-from utils import config
+from om.core.cli import config
 
 State = Enum('State', ['START', 'RUN', 'STOP'])
 
