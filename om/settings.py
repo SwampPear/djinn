@@ -1,1 +1,0 @@
-ROOT = "~/Desktop/dev/om"
