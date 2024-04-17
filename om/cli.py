@@ -11,14 +11,19 @@ class CLI:
     Processes and routes a command based on args.
     """
     def _process_command(self, cmd):
-        # use argparse
+        # use argparsel
         pass
 
     """
-    Provides a descsription of each command and their syntax.
+    Provides a description of each command and their syntax.
     """
     def _help(self):
-        pass
+        _message = """
+        Commands:
+        mkdir:
+         - description: creates a directory
+         - usage: mkdir <dir>
+        """
 
     """
     Makes a directory and logs results.
@@ -27,7 +32,7 @@ class CLI:
         try:
             os.mkdir(dir)
         except OSError:
-            pass
+            print("mkdir error")
 
     """
     Removes a directory and logs results.
@@ -36,7 +41,7 @@ class CLI:
         try:
             os.rmdir(dir)
         except OSError:
-            pass
+            print("rmdir error")
 
     """
     Lists the contents of a the current directory and logs results.
