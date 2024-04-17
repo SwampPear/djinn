@@ -21,6 +21,9 @@ class CLI:
         ## mkdir
          - description: creates a directory
          - usage: mkdir <dir>
+
+        ## rmdir
+         - description: removes a directory
         """
 
     def _mkdir(self, dir):
