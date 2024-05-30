@@ -1,6 +1,6 @@
 import os
-import sys
 
 
-PROJECT_NAME = 'workspace'
-ENVIRONMENT = f'{os.getcwd()}/{PROJECT_NAME}'
+NAME = 'workspace'
+ROOT = f'{os.getcwd()}/workspace'
+DB = f'{os.getcwd()}/data.db'
