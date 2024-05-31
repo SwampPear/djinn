@@ -1,0 +1,9 @@
+old/
+
+# python
+env/
+sites/
+__pycache__/
+
+# database
+*.db
