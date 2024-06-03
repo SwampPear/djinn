@@ -7,6 +7,12 @@ class DatabaseException(Exception):
         super().__init__(message)
 
 
+class Log:
+    id: int
+    type: str
+    contents: str=None
+
+
 class Database:
     """
     Database interface.
@@ -20,11 +26,13 @@ class Database:
     """
     Querys the database.
     """
-    def query(self, sql: str, params: List[str]=()) -> None:
+    def query(self, sql: str, params: List[str]=()) -> sqlite3.Cursor:
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
 
         self.conn.commit()
+
+        return cursor
 
     
     """
@@ -34,7 +42,7 @@ class Database:
         type - type specifier
         contents - log contents
     """
-    def create(self, type: str, contents: str=None) -> None:
+    def create(self, type: str, contents: str=None) -> int:
         if type == 'OT':        # standard out
             pass
         elif type == 'IN':      # standard in
@@ -58,7 +66,9 @@ class Database:
         VALUES (?, ?)
         '''
 
-        self.query(sql, (type, contents))
+        cursor = self.query(sql, (type, contents))
+
+        return cursor.lastrowid
 
 
     """
@@ -67,9 +77,8 @@ class Database:
     Params:
         kwargs - querying parameters
     """
-    def read(self, **kwargs: str):  # TODO: change return type
+    def read(self, **kwargs: str) -> List[Log]:
         query = 'AND '.join(f'{key} = ?' for key in kwargs)
-        query_pos = ', '.join('?' for i in range(len(kwargs)))
 
         sql = f'''
         SELECT * FROM log
@@ -79,8 +88,7 @@ class Database:
 
         params = tuple(kwargs.values())
 
-        cursor = self.conn.cursor()
-        cursor.execute(sql, params)
+        cursor = self.query(sql, params)
 
         return cursor.fetchall()
 

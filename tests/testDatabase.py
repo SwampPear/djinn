@@ -7,6 +7,12 @@ class TestDatabase(unittest.TestCase):
     Creates a tempoorary database interface.
     """
     def setUp(self):
+        self._setupDB()
+
+    """
+    Creates a temporary database interface.
+    """
+    def _setupDB(self):
         self.db = Database('test.db')
 
         sql = 'DROP TABLE IF EXISTS log'
@@ -22,20 +28,22 @@ class TestDatabase(unittest.TestCase):
         """
 
         self.db.query(sql)
-
+    
     
     """
     Test creating log.
     """
-    def test_create_log_entry(self):
-        self.db.create(type='OT', contents='This is a test log entry.')
-        results = self.db.read(type='OT')
+    def test_create_read_log_entry(self):
+        self._setupDB()
+
+        id = self.db.create(type='OT', contents='This is a test log entry.')
+        result = self.db.read(id=id)
 
         # new log created
-        self.assertEqual(len(results), 1)
+        self.assertEqual(result[0][0], 1)
 
         # type set
-        self.assertEqual(results[0][1], 'OT')
+        self.assertEqual(result[0][1], 'OT')
 
         # contents set
-        self.assertEqual(results[0][2], 'This is a test log entry.')
+        self.assertEqual(result[0][2], 'This is a test log entry.')
