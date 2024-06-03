@@ -1,0 +1,21 @@
+{
+    "table": [
+        {
+            "name": "log",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "varchar",
+                    "pk": true,
+                    "nullable": false,
+                    "autoincrement": true
+                },
+                {
+                    "name": "type",
+                    "type": "char",
+                    "nullable": false
+                }
+            ]
+        }
+    ]
+}
