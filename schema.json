@@ -12,8 +12,12 @@
                 },
                 {
                     "name": "type",
-                    "type": "char",
+                    "type": "varchar(2)", /* OT, IN, ER, FT, FC*/
                     "nullable": false
+                },
+                {
+                    "name": "contents",
+                    "char": "varchar"
                 }
             ]
         }
