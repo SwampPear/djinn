@@ -2,6 +2,11 @@ import sqlite3
 from typing import List
 
 
+class DatabaseException(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 class Database:
     """
     Database interface.
@@ -30,7 +35,29 @@ class Database:
         contents - log contents
     """
     def create(self, type: str, contents: str=None) -> None:
-        sql = "INSERT INTO log (type, contents) VALUES (?, ?)"
+        if type == 'OT':        # standard out
+            pass
+        elif type == 'IN':      # standard in
+            pass
+        elif type == 'ER':      # standard error
+            pass
+        elif type == 'FT':      # file tree
+            pass
+        elif type == 'FC':      # file contents
+            pass
+        elif type == 'PI':      # prompt in
+            pass
+        elif type == 'PO':      # prompt out
+            pass
+        else:
+            raise DatabaseException(f'\'{type}\' is not a valid type specifier')
+
+        sql = '''
+        INSERT INTO 
+            log (type, contents) 
+        VALUES (?, ?)
+        '''
+
         self.query(sql, (type, contents))
 
 
@@ -41,8 +68,18 @@ class Database:
         kwargs - querying parameters
     """
     def read(self, **kwargs: str):  # TODO: change return type
-        sql = "SELECT * FROM log WHERE " + " AND ".join(f"{key} = ?" for key in kwargs)
+        query = 'AND '.join(f'{key} = ?' for key in kwargs)
+        query_pos = ', '.join('?' for i in range(len(kwargs)))
+
+        sql = f'''
+        SELECT * FROM log
+        WHERE
+            {query}
+        VALUES {query_pos}
+        '''
+
         params = tuple(kwargs.values())
+        
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
 
@@ -71,6 +108,7 @@ class Database:
     def delete(self, id: str) -> None:
         sql = "DELETE FROM log WHERE id = ?"
         self.query(sql, (id,))
+
 
     def __del__(self):
         self.conn.close()
