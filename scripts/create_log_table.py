@@ -13,6 +13,10 @@ from djinn import Database
 def create_log_table() -> None:
     db = Database('data.db')
 
+    sql = 'DROP TABLE IF EXISTS log'
+
+    db.query(sql)
+
     sql = """
     CREATE TABLE IF NOT EXISTS log (
         id INTEGER PRIMARY KEY NOT NULL,

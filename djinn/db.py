@@ -20,7 +20,7 @@ class Database:
     """
     Querys the database.
     """
-    def query(self, sql: str, params: List[str]) -> None:
+    def query(self, sql: str, params: List[str]=()) -> None:
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
 
@@ -75,11 +75,10 @@ class Database:
         SELECT * FROM log
         WHERE
             {query}
-        VALUES {query_pos}
         '''
 
         params = tuple(kwargs.values())
-        
+
         cursor = self.conn.cursor()
         cursor.execute(sql, params)
 
