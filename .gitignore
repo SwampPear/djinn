@@ -4,6 +4,3 @@ old/
 env/
 sites/
 __pycache__/
-
-# database
-*.db
