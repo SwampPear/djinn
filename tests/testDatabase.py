@@ -16,7 +16,8 @@ class TestDatabase(unittest.TestCase):
     """
     def test_create_log_entry(self):
         self.db.create(type='OT', contents='This is a test log entry.')
-        results = self.db.read(type='test')
+        results = self.db.read(type='OT')
+
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0][1], 'test')
         self.assertEqual(results[0][2], 'This is a test log entry.')
