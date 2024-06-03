@@ -33,7 +33,7 @@ class TestDatabase(unittest.TestCase):
     """
     Test creating log.
     """
-    def test_create_read_log_entry(self):
+    def test_create_read_log(self):
         self._setupDB()
 
         id = self.db.create(type='OT', contents='This is a test log entry.')
@@ -47,3 +47,25 @@ class TestDatabase(unittest.TestCase):
 
         # contents set
         self.assertEqual(result[0][2], 'This is a test log entry.')
+
+
+    """
+    Test updating log.
+    """
+    def test_update_log(self):
+        self._setupDB()
+
+        # TODO: implement this
+
+        pass
+
+
+    """
+    Test deleting log.
+    """
+    def test_delete_log(self):
+        self._setupDB()
+
+        # TODO: implement this
+
+        pass

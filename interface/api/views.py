@@ -1,3 +1,16 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
-# Create your views here.
+
+def log(request, *kwargs):
+    print(kwargs)
+    
+    if request.method == 'POST':
+        'item/<int:item_id>/'
+
+
+    return JsonResponse({})
+
+
+
+
