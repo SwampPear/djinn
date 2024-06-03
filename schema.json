@@ -12,7 +12,7 @@
                 },
                 {
                     "name": "type",
-                    "type": "varchar(2)", /* OT, IN, ER, FT, FC*/
+                    "type": "varchar(2)",
                     "nullable": false
                 },
                 {
