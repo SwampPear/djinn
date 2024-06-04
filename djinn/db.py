@@ -100,10 +100,10 @@ class Database:
         id - id of object to update
         kwargs - updating parameters
     """
-    def update(self, id: str, **kwargs: str) -> None:
-        sql = "UPDATE log SET " + ", ".join(f"{key} = ?" for key in kwargs) + " WHERE id = ?"
-        params = tuple(kwargs.values()) + (id,)
-        self.query(sql, params)
+    def update() -> None:
+        pass
+        
+        # TODO: implement
 
 
     """

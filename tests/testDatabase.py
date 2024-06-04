@@ -66,6 +66,11 @@ class TestDatabase(unittest.TestCase):
     def test_delete_log(self):
         self._setupDB()
 
-        # TODO: implement this
+        id = self.db.create(type='OT', contents='something')
+        
+        self.db.delete(id)
 
-        pass
+        results = self.db.read(type='OT', contents='somthing')
+
+        self.assertEqual(len(results), 0)
+        
