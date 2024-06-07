@@ -14,11 +14,13 @@ def read(path: str) -> str:
 
 
 """
-Formats a prompt into an xml representation.
+Formats a prompt into and intermediate representation.
 """
-def format_prompt():
+def prompt():
     prompt = {}
-    prompt['objective'] = 'do what is said in the context'
+    prompt['objective'] = 'do what is said in th'
     prompt['context'] = 'you are an llm with the power to perform simple terminal commands, how should you be implemented'
+
+    print(prompt)
 
     return json.dumps(prompt)

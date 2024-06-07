@@ -96,14 +96,10 @@ class Database:
     """
     Update functionality for log table.
 
-    Params:
-        id - id of object to update
-        kwargs - updating parameters
+    TODO: implement
     """
     def update() -> None:
         pass
-        
-        # TODO: implement
 
 
     """
