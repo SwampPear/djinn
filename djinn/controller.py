@@ -2,16 +2,12 @@ import subprocess
 from .db import Database
 from .model import Model
 from settings import *
-from .utils import prompt
-
 
 
 class State:
     RUNNING = 0
-    STOPPED = 1
-    START   = 2
-    STOP    = 3
-    TERM    = 4
+    START   = 1
+    STOP    = 2
 
 
 class Controller:
@@ -34,19 +30,15 @@ class Controller:
 
         while not stop:
             if state == State.START:        # initially starting
-                # nothing here now should be intitial tasks to do
+                # buildup
                 state = State.RUNNING
-            elif state == State.RUNNING:    # active state
-                # meat and butter
 
+            elif state == State.RUNNING:    # active state
                 # 1. begin with prompt
                 prompt = 'write a program that implements a function in python that multiplies two numbers'
-        
-                # 2. format prompt for generation (include context, operational requirements) TODO: prompt generator module
-                prompt = prompt(prompt)
 
-                # a. load into model and get output and action sequence (should provide information on how to format correctly)
-                result = self.model.query()
+                # query model with (formatted) prompt
+                result = self.model.query(prompt)
 
                 print(result)
                 
@@ -57,13 +49,13 @@ class Controller:
                 # 5. repeat 2-4 until effectiveness sufficient
                 # 6. repeat 1-5 until process terminated 
 
-                pass
-            elif state == State.STOPPED:    # already stopped
-                pass
+                state = State.STOP
+
             elif state == State.STOP:       # on initial stop
-                state = State.STOPPED
-            elif state == State.TERM:       # program terminated
+                # teardown
                 self._quit()
+                stop = True
+
             else:
                 pass
 

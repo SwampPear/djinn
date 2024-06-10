@@ -1,7 +1,7 @@
 import requests
 import subprocess
 import threading
-
+import json
 
 # TODO: implement model memory (prompt caching) 
 # could possibly be handled through 'messages' field of api call
@@ -40,7 +40,7 @@ class Model:
             'messages': [
                 {
                     'role': 'user',
-                    'content': prompt
+                    'content': self._fmt_prompt(prompt)
                 }
             ],
             'stream': False
@@ -52,7 +52,7 @@ class Model:
 
         response = requests.post(url, headers=headers, json=data)
 
-        return(response.text)#.json()['message']['content'])
+        return(response.json()['message']['content'])
 
 
     """
@@ -104,3 +104,15 @@ class Model:
         # TODO: add timeout functionality
         while self.llama3_thread_pid == PidStatus.NOT_INITIALIZED:
             pass
+
+    """
+    Formats a prompt into and intermediate representation.
+    """
+    def _fmt_prompt(self, prompt: str):
+        fmt_prompt = {}
+        fmt_prompt['objective'] = prompt
+        fmt_prompt['context'] = 'you are an llm with the power to perform simple terminal commands, how should the objective be implemented'
+
+        print(fmt_prompt)
+
+        return json.dumps(fmt_prompt)
