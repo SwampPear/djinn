@@ -2,6 +2,7 @@ import requests
 import subprocess
 import threading
 import json
+from .utils import *
 
 # TODO: implement model memory (prompt caching) 
 # could possibly be handled through 'messages' field of api call
@@ -111,7 +112,7 @@ class Model:
     def _fmt_prompt(self, prompt: str):
         fmt_prompt = {}
         fmt_prompt['objective'] = prompt
-        fmt_prompt['context'] = 'you are an llm with the power to perform simple terminal commands, how should the objective be implemented'
+        fmt_prompt['context'] = read_file('prompts/basic_context.txt')
 
         print(fmt_prompt)
 
