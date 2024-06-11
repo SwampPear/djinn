@@ -110,6 +110,7 @@ class Model:
     Formats a prompt into and intermediate representation.
     """
     def _fmt_prompt(self, prompt: str):
+        # TODO: clean up with options
         fmt_prompt = {}
         fmt_prompt['objective'] = prompt
         fmt_prompt['context'] = read_file('prompts/basic_context.md')

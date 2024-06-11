@@ -1,4 +1,7 @@
 import subprocess
+import re
+import json
+from typing import List
 from .db import Database
 from .model import Model
 from settings import *
@@ -8,6 +11,11 @@ class State:
     RUNNING = 0
     START   = 1
     STOP    = 2
+
+
+class Action:
+    action: str
+    description: str
 
 
 class Controller:
@@ -45,6 +53,7 @@ class Controller:
                 # these should also be local to the controller:
 
                 # 3. iterate over and execute actions, feed output back into model
+                self._execute_instructions(result)
                 # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
                 # 5. repeat 2-4 until effectiveness sufficient
                 # 6. repeat 1-5 until process terminated 
@@ -107,3 +116,40 @@ class Controller:
     """
     def _quit(self) -> None:
         self.model.quit()
+
+    """
+    Parses instructions from query results.
+    """
+    def _parse_instructions(self, instructions: str) -> List[Action]:
+        parsed = []
+
+        pattern = r'[\{\[]\s*"action":\s*"[^"]+",\s*"description":\s*"[^"]+"\s*[\}\]]'
+        matches = re.findall(pattern, instructions, re.DOTALL)
+
+        for match in matches:
+            parsed.append(json.loads(match))
+
+        return parsed
+            
+
+    """
+    Executes the instructions from query results.
+
+    Params:
+        query_result - result of the query with encoded instructions
+    """
+    def _execute_instructions(self, query_result: str) -> None:
+        parsed_instructions = self._parse_instructions(query_result)
+
+        for instruction in parsed_instructions:
+            self._execute_instruction(instruction)
+
+    
+    """
+    Executes an individual instruction
+    """
+    def _execute_instruction(self, instruction: str) -> None:
+        # TODO: implement instruction parsing
+                
+        # regex match instructions
+        print(instruction)
