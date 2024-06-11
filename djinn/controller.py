@@ -53,6 +53,7 @@ class Controller:
 
                 # iterate over and execute actions, feed output back into model
                 self._execute_instructions(result)
+
                 # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
                 # 5. repeat 2-4 until effectiveness sufficient
                 # 6. repeat 1-5 until process terminated 
@@ -214,8 +215,10 @@ class Controller:
     """
     Changes the cwd.
     """
-    def _cd(self, arg):
-        print(arg)
+    def _cd(self, args):
+        self.cwd = f'touch {self._path(args.path)}'
+
+        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', self.cwd, '\n')
 
     """
     Changes the permissions of a file
@@ -230,6 +233,8 @@ class Controller:
     def _touch(self, args):
         cmd = f'touch {self._path(args.path)}'
 
+        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+
         self._cmd(cmd)
 
 
@@ -238,6 +243,8 @@ class Controller:
     """
     def _mkdir(self, args):
         cmd = f'mkdir {self._path(args.path)}'
+
+        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
 
         self._cmd(cmd)
 

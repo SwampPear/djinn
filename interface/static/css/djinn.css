@@ -1,3 +1,7 @@
+:root {
+    --box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
 html,
 body {
     margin: 0;
@@ -17,7 +21,9 @@ body {
 .editor,
 .log {
     background-color: rgb(242, 242, 242);
-    height: calc(100vh - 3rem);
+    border-radius: 1rem;
+    box-shadow: var(--box-shadow);
+    height: calc(100vh - 6rem);
     padding: 1.5rem;
     width: calc((100vw - 4.5rem) / 2);
 }
