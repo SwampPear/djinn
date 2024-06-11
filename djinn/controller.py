@@ -5,6 +5,7 @@ import argparse
 from typing import List
 from .db import Database
 from .model import Model
+from .log import log, Style
 from settings import *
 
 
@@ -50,7 +51,6 @@ class Controller:
                 # query model with (formatted) prompt
                 result = self.model.query(prompt)
 
-                print(result)
                 # iterate over and execute actions, feed output back into model
                 self._execute_instructions(result)
                 # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
@@ -106,8 +106,8 @@ class Controller:
         error_str = err.decode('utf-8')
 
         # Print the output and error
-        print("Output:", output_str)
-        print("Error:", error_str)
+        #print("Output:", output_str)
+        #print("Error:", error_str)
 
 
     """
@@ -154,15 +154,18 @@ class Controller:
         args = parser.parse_args(instruction.split())
 
         if args.command == 'cd':
-            print(args)
+            #print(args)
+            pass
         elif args.command == 'chmod':
-            print(args)
+            #print(args)
+            pass
         elif args.command == 'touch':
             self._touch(args)
         elif args.command == 'mkdir':
             self._mkdir(args)
         elif args.command == 'echo':
-            print(args)
+            #print(args)
+            pass
 
     
     """

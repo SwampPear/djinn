@@ -3,6 +3,7 @@ import subprocess
 import threading
 import json
 from .utils import *
+from .log import *
 
 # TODO: implement model memory (prompt caching) 
 # could possibly be handled through 'messages' field of api call
@@ -52,6 +53,8 @@ class Model:
         }
 
         response = requests.post(url, headers=headers, json=data)
+
+        log(Style.cyan, Style.bold, '[prompt]', Style.end, ' ', prompt, '\n')
 
         return(response.json()['message']['content'])
 
@@ -114,7 +117,5 @@ class Model:
         fmt_prompt = {}
         fmt_prompt['objective'] = prompt
         fmt_prompt['context'] = read_file('prompts/basic_context.md')
-
-        print(fmt_prompt)
 
         return json.dumps(fmt_prompt)
