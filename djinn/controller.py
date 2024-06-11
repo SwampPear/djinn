@@ -243,6 +243,13 @@ class Controller:
 
         self._cmd(cmd)
 
+    """
+    Lists file system objects.
+    """
+    def _ls(self, args):
+        # TODO: implement
+        pass
+
 
     """
     Echoes to terminal.
