@@ -1,6 +1,7 @@
 import subprocess
 import re
 import json
+import argparse
 from typing import List
 from .db import Database
 from .model import Model
@@ -28,6 +29,7 @@ class Controller:
         self.model = Model()
 
         # state
+        self.cwd = os.getcwd()
 
     """
     Runs the controller.
@@ -49,10 +51,7 @@ class Controller:
                 result = self.model.query(prompt)
 
                 print(result)
-                
-                # these should also be local to the controller:
-
-                # 3. iterate over and execute actions, feed output back into model
+                # iterate over and execute actions, feed output back into model
                 self._execute_instructions(result)
                 # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
                 # 5. repeat 2-4 until effectiveness sufficient
@@ -142,14 +141,113 @@ class Controller:
         parsed_instructions = self._parse_instructions(query_result)
 
         for instruction in parsed_instructions:
-            self._execute_instruction(instruction)
+            self._execute_instruction(instruction['action'])
 
     
     """
     Executes an individual instruction
     """
     def _execute_instruction(self, instruction: str) -> None:
-        # TODO: implement instruction parsing
-                
-        # regex match instructions
-        print(instruction)
+        parser = self._init_parser()
+
+        # parse instruction
+        args = parser.parse_args(instruction.split())
+
+        if args.command == 'cd':
+            print(args)
+        elif args.command == 'chmod':
+            print(args)
+        elif args.command == 'touch':
+            self._touch(args)
+        elif args.command == 'mkdir':
+            self._mkdir(args)
+        elif args.command == 'echo':
+            print(args)
+
+    
+    """
+    Initializes an argument parser.
+    """
+    def _init_parser(self) -> argparse.ArgumentParser:
+        parser = argparse.ArgumentParser(description='instructions')
+        subparsers = parser.add_subparsers(dest='command', 
+            help='available commands')
+
+        # mkdir
+        mkdir_parser = subparsers.add_parser('mkdir', 
+            help='creates a directory')
+        
+        mkdir_parser.add_argument('path', type=str, help='path')
+
+        # touch
+        touch_parser = subparsers.add_parser('touch', 
+            help='creates a file')
+        
+        touch_parser.add_argument('path', type=str, help='path')
+
+        # cd
+        cd_parser = subparsers.add_parser('cd', 
+            help='changes directory')
+        
+        cd_parser.add_argument('path', type=str, help='path')
+
+        # echo
+        echo_parser = subparsers.add_parser('echo', 
+            help='changes directory')
+        
+        echo_parser.add_argument('options', nargs='*', 
+            help='options for echo')
+        
+        # chmod
+        chmod_parser = subparsers.add_parser('chmod', 
+            help='changes directory')
+        
+        chmod_parser.add_argument('permissions', type=str, help='permissions')
+        chmod_parser.add_argument('path', type=str, help='path')
+    
+        return parser
+    
+
+    """
+    Changes the cwd.
+    """
+    def _cd(self, arg):
+        print(arg)
+
+    """
+    Changes the permissions of a file
+    """
+    def _chmod(self):
+        pass
+
+
+    """
+    Creates a new file.
+    """
+    def _touch(self, args):
+        cmd = f'touch {self._path(args.path)}'
+
+        self._cmd(cmd)
+
+
+    """
+    Creates a directory.
+    """
+    def _mkdir(self, args):
+        cmd = f'mkdir {self._path(args.path)}'
+
+        self._cmd(cmd)
+
+
+    """
+    Echoes to terminal.
+    """
+    def _echo(self):
+        pass
+
+    
+    """
+    Formats the correct path.
+    """
+    def _path(self, path: str) -> str:
+        return f'{ROOT}/{path}'
