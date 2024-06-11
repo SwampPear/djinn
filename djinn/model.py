@@ -1,6 +1,19 @@
 import requests
 import subprocess
 import threading
+import json
+from .utils import *
+from .log import *
+
+# TODO: implement model memory (prompt caching) 
+# could possibly be handled through 'messages' field of api call
+
+
+class PidStatus:
+    """
+    Process id status.
+    """
+    NOT_INITIALIZED = -1
 
 
 class Model:
@@ -8,23 +21,20 @@ class Model:
     Provides an interface for interacting with a locally hosted llama3 instance.
     """
     def __init__(self) -> None:
-        # init llama process
-        self.llama3_thread_pid = -1
-        self.llama3_thread = threading.Thread(target=self._init_llama_thread)
-        self.llama3_thread.start()
-
-        self._sync_llama3_thread_pid()
-
-        self.quit()
-
-        # wait for thread to finish
-        self.llama3_thread.join()
+        self.llama3_thread_pid = PidStatus.NOT_INITIALIZED
+        self.llama3_thread = self._init_llama()
 
 
     """
-    Queries the llama server.
+    Queries the llama3 server.
+
+    Params:
+        prompt - prompt to query the model with
+
+    Returns:
+        response from server
     """
-    def query(self, prompt) -> None:
+    def query(self, prompt: str) -> str:
         url = 'http://localhost:11434/api/chat'
 
         data = {
@@ -32,7 +42,7 @@ class Model:
             'messages': [
                 {
                     'role': 'user',
-                    'content': prompt
+                    'content': self._fmt_prompt(prompt)
                 }
             ],
             'stream': False
@@ -44,10 +54,13 @@ class Model:
 
         response = requests.post(url, headers=headers, json=data)
 
+        log(Style.cyan, Style.bold, '[prompt]', Style.end, ' ', prompt, '\n')
+
         return(response.json()['message']['content'])
 
+
     """
-    Terminates the llama server.
+    Terminates the llama3 server.
     """
     def quit(self) -> None:
         process = subprocess.Popen(
@@ -59,8 +72,23 @@ class Model:
 
         process.communicate()
 
+        self.llama3_thread.join()
+
+
     """
-    Initializes the llama server thread.
+    Initializes the llama3 server.
+    """
+    def _init_llama(self) -> None:
+        llama3_thread = threading.Thread(target=self._init_llama_thread)
+        llama3_thread.start()
+
+        self._sync_llama3_thread_pid()
+
+        return llama3_thread
+
+
+    """
+    Initializes the llama3 server thread.
     """
     def _init_llama_thread(self) -> None:
         process = subprocess.Popen(
@@ -77,5 +105,17 @@ class Model:
     Syncs the llama server thread pid.
     """
     def _sync_llama3_thread_pid(self) -> None:
-        while self.llama3_thread_pid == -1:
+        # TODO: add timeout functionality
+        while self.llama3_thread_pid == PidStatus.NOT_INITIALIZED:
             pass
+
+    """
+    Formats a prompt into and intermediate representation.
+    """
+    def _fmt_prompt(self, prompt: str):
+        # TODO: clean up with options
+        fmt_prompt = {}
+        fmt_prompt['objective'] = prompt
+        fmt_prompt['context'] = read_file('prompts/basic_context.md')
+
+        return json.dumps(fmt_prompt)
