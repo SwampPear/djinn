@@ -54,8 +54,6 @@ class Model:
 
         response = requests.post(url, headers=headers, json=data)
 
-        log(Style.cyan, Style.bold, '[prompt]', Style.end, ' ', prompt, '\n')
-
         return(response.json()['message']['content'])
 
 

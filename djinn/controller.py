@@ -49,6 +49,8 @@ class Controller:
                 prompt = 'write a program that implements a function in python that multiplies two numbers'
 
                 # query model with (formatted) prompt
+                log(Style.cyan, Style.bold, '[prompt]', Style.end, ' ', prompt, '\n')
+
                 result = self.model.query(prompt)
 
                 # iterate over and execute actions, feed output back into model
@@ -165,6 +167,7 @@ class Controller:
         elif args.command == 'mkdir':
             self._mkdir(args)
         elif args.command == 'echo':
+            self._echo(args)
             #print(args)
             pass
 
@@ -252,8 +255,15 @@ class Controller:
     """
     Echoes to terminal.
     """
-    def _echo(self):
-        pass
+    def _echo(self, args):
+        contents = args.options[0:len(args.options) - 2]
+        path = self._path(args.options[-1])
+
+        cmd = f'echo {" ".join(contents)} >> {path}'
+
+        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+
+        self._cmd(cmd)
 
     
     """
@@ -261,3 +271,30 @@ class Controller:
     """
     def _path(self, path: str) -> str:
         return f'{ROOT}/{path}'
+    
+
+    """
+    Edits a file.
+    """
+    def _edit_file(self, contents, path, replace=None):
+        with open(path, 'w') as file:
+            file.write(contents)
+
+        """
+        # TODO: implement file buffer
+        file_contents = ''
+
+        with open(path, 'r', encoding='utf-8') as file:
+            file_contents = file.read()
+
+            if replace:
+                x_c, x_r = replace[0]
+                y_c, _r = replace[0]
+                pass
+            else:
+                file_contents = contents
+
+        with open(path, 'w') as file:
+            file.write(file_contents)
+        """
+

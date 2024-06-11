@@ -147,3 +147,7 @@ the steps should be listed in the folllowing format:
 
 please list every atomic step necessary to complete the objective but limit the 
 steps to those actionable within the terminal
+
+# Other Considerations
+- please use proper formatting (with tabs and newlines) for any code written, this includes
+tabs for python or brackets for c++, e.t.c
