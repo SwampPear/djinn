@@ -10,41 +10,48 @@ from settings import *
 
 
 class State:
-    RUNNING = 0
-    START   = 1
-    STOP    = 2
+    """
+    State of the controller.
+    """
+    RUNNING = 0     # already running
+    START   = 1     # initially starting
+    STOP    = 2     # initially stopping
 
 
 class Action:
+    """
+    Action parsed from llm output.
+    """
     action: str
     description: str
 
 
 class Controller:
     """
-    Controlls all processes.
+    Controls program logic and handles all processes.
     """
-    def __init__(self) -> None:
-        # modules
+    def __init__(self):
         self.db = Database(DB_PATH)
         self.model = Model()
 
         # state
+        self.parser = self._init_parser()
         self.cwd = os.getcwd()
+        self.stopped = False
+
 
     """
-    Runs the controller.
+    Main execution loop for this controller.
     """
     def run(self) -> None:
-        stop = False
         state = State.START
 
-        while not stop:
-            if state == State.START:        # initially starting
+        while not self.stopped:
+            if state == State.START:
                 # buildup
                 state = State.RUNNING
 
-            elif state == State.RUNNING:    # active state
+            elif state == State.RUNNING:
                 # 1. begin with prompt
                 prompt = 'write a program that implements a function in python that multiplies two numbers'
 
@@ -65,52 +72,10 @@ class Controller:
             elif state == State.STOP:       # on initial stop
                 # teardown
                 self._quit()
-                stop = True
+                self.stopped = True
 
             else:
                 pass
-
-    """
-    Initializes an automated development session.
-    """
-    def _init(self) -> None:
-        # feed prompt into llm
-        # take ouput and feed into aterm (automated terminal)
-        output = 'ls'
-        self._cmd(output)
-
-        # take output from aterm feed into llm
-        # repeat
-        pass
-
-    """
-    Parses and executes a given command.
-
-    Params:
-        cmd - the command to parse
-
-    Returns:
-        output of the executed command
-    """
-    def _cmd(self, cmd: str) -> str:
-        # Execute the command
-        process = subprocess.Popen(
-            cmd, 
-            shell=True, 
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE
-        )
-
-        # Get the output and error (if any)
-        out, err = process.communicate()
-
-        # Decode bytes to string (assuming utf-8 encoding)
-        output_str = out.decode('utf-8')
-        error_str = err.decode('utf-8')
-
-        # Print the output and error
-        #print("Output:", output_str)
-        #print("Error:", error_str)
 
 
     """
@@ -118,6 +83,36 @@ class Controller:
     """
     def _quit(self) -> None:
         self.model.quit()
+        self.stopped = True
+
+    """
+    Executes a given command.
+
+    Params:
+        cmd - the command to execute
+
+    Returns:
+        error if error present, otherwise output
+    """
+    def _cmd(self, cmd: str) -> str:
+        # execute command
+        process = subprocess.Popen(
+            cmd, 
+            shell=True, 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE
+        )
+
+        out, err = process.communicate()
+
+        output_str = out.decode('utf-8')
+        error_str = err.decode('utf-8')
+
+        if error_str != '':
+            return error_str
+        
+        return output_str
+
 
     """
     Parses instructions from query results.
@@ -141,26 +136,32 @@ class Controller:
         query_result - result of the query with encoded instructions
     """
     def _execute_instructions(self, query_result: str) -> None:
-        parsed_instructions = self._parse_instructions(query_result)
+        # parse instructions
+        parsed_instructions = []
 
+        pattern = r'[\{\[]\s*"action":\s*"[^"]+",\s*"description":\s*"[^"]+"\s*[\}\]]'
+        matches = re.findall(pattern, query_result, re.DOTALL)
+
+        for match in matches:
+            parsed_instructions.append(json.loads(match))
+
+        # execute parsed instructions
         for instruction in parsed_instructions:
             self._execute_instruction(instruction['action'])
 
     
     """
     Executes an individual instruction
+
+    Params:
+        instruction - the instruction to execute
     """
     def _execute_instruction(self, instruction: str) -> None:
-        parser = self._init_parser()
-
-        # parse instruction
-        args = parser.parse_args(instruction.split())
+        args = self.parser.parse_args(instruction.split())
 
         if args.command == 'cd':
-            #print(args)
             pass
         elif args.command == 'chmod':
-            #print(args)
             pass
         elif args.command == 'touch':
             self._touch(args)
@@ -168,49 +169,39 @@ class Controller:
             self._mkdir(args)
         elif args.command == 'echo':
             self._echo(args)
-            #print(args)
             pass
 
-    
+
     """
     Initializes an argument parser.
+
+    Returns:
+        the argument parser
     """
     def _init_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(description='instructions')
-        subparsers = parser.add_subparsers(dest='command', 
-            help='available commands')
+        subparsers = parser.add_subparsers(dest='command')
 
         # mkdir
-        mkdir_parser = subparsers.add_parser('mkdir', 
-            help='creates a directory')
-        
-        mkdir_parser.add_argument('path', type=str, help='path')
+        mkdir_parser = subparsers.add_parser('mkdir')
+        mkdir_parser.add_argument('path', type=str)
 
         # touch
-        touch_parser = subparsers.add_parser('touch', 
-            help='creates a file')
-        
-        touch_parser.add_argument('path', type=str, help='path')
+        touch_parser = subparsers.add_parser('touch')
+        touch_parser.add_argument('path', type=str)
 
         # cd
-        cd_parser = subparsers.add_parser('cd', 
-            help='changes directory')
-        
-        cd_parser.add_argument('path', type=str, help='path')
+        cd_parser = subparsers.add_parser('cd')
+        cd_parser.add_argument('path', type=str)
 
         # echo
-        echo_parser = subparsers.add_parser('echo', 
-            help='changes directory')
-        
-        echo_parser.add_argument('options', nargs='*', 
-            help='options for echo')
+        echo_parser = subparsers.add_parser('echo')
+        echo_parser.add_argument('options', nargs='*')
         
         # chmod
-        chmod_parser = subparsers.add_parser('chmod', 
-            help='changes directory')
-        
-        chmod_parser.add_argument('permissions', type=str, help='permissions')
-        chmod_parser.add_argument('path', type=str, help='path')
+        chmod_parser = subparsers.add_parser('chmod')
+        chmod_parser.add_argument('permissions', type=str)
+        chmod_parser.add_argument('path', type=str)
     
         return parser
     
@@ -219,14 +210,16 @@ class Controller:
     Changes the cwd.
     """
     def _cd(self, args):
-        self.cwd = f'touch {self._path(args.path)}'
+        self.cwd = f'{self.cwd}/{args.path}'
+        print(self.cwd)
 
         log(Style.green, Style.bold, '[cmd]', Style.end, ' ', self.cwd, '\n')
 
     """
-    Changes the permissions of a file
+    Changes the permissions of a file.
     """
     def _chmod(self):
+        # TODO: imeplement
         pass
 
 

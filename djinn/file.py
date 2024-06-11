@@ -1,4 +1,7 @@
 class FileBuffer:
-    def __init__(self, contents):
-        self.lines = contents.split('\n')
+    """
+    File object to be used by the controller.
+    """
+    def __init__(self, raw: str):
+        self.raw = raw
         
