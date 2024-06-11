@@ -112,7 +112,7 @@ class Model:
     def _fmt_prompt(self, prompt: str):
         fmt_prompt = {}
         fmt_prompt['objective'] = prompt
-        fmt_prompt['context'] = read_file('prompts/basic_context.txt')
+        fmt_prompt['context'] = read_file('prompts/basic_context.md')
 
         print(fmt_prompt)
 
