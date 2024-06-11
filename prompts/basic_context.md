@@ -111,6 +111,14 @@ commands that are not unix are valid to utilize.
 
 ## Available Custom Commands
 
+[
+    {
+        "command": "write",
+        "usage": "write [START_ROW]:[START_COL] [START_ROW]:[START_COL] [FILE] [CONTENT]",
+        "options": []
+    }
+]
+
 # Listing the steps
 
 the steps should be listed in the folllowing format:
