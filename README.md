@@ -1,5 +1,3 @@
-# Djinn
-
 Djinn is a LLM-Execution bridge which is tailored towards automated development.
 
 

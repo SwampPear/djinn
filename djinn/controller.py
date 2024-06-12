@@ -1,4 +1,3 @@
-import subprocess
 import re
 import json
 import argparse
@@ -244,11 +243,19 @@ class Controller:
 
         self._cmd(cmd)
 
+    """
+    Lists file system objects.
+    """
+    def _ls(self, args):
+        # TODO: implement
+        pass
+
 
     """
     Echoes to terminal.
     """
     def _echo(self, args):
+        # TODO: take out in favor of 'write' custom command
         contents = args.options[0:len(args.options) - 2]
         path = self._path(args.options[-1])
 
@@ -263,6 +270,7 @@ class Controller:
     Formats the correct path.
     """
     def _path(self, path: str) -> str:
+        # TODO: implement path sanitizing
         return f'{ROOT}/{path}'
     
 
@@ -270,6 +278,7 @@ class Controller:
     Edits a file.
     """
     def _edit_file(self, contents, path, replace=None):
+        # TODO: replace with write
         with open(path, 'w') as file:
             file.write(contents)
 

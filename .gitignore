@@ -1,6 +1,3 @@
-old/
-
-# python
 env/
-sites/
 __pycache__/
+*.db
