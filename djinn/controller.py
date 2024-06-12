@@ -165,6 +165,9 @@ class Controller:
             self._mkdir(args)
         elif args.command == 'echo':
             self._echo(args)
+        elif args.command == 'write':
+            self._write(args)
+        else:
             pass
 
 
@@ -259,16 +262,17 @@ class Controller:
     Writes to a file.
     """
     def _write(self, args):
-        contents = args.options
-        path = self._path(args.options[-1])
+        # row, col
+        start = [i for i in args.start.split('-')]
+        end = [i for i in args.end.split('-')]
+        contents = ' '.join(args.contents)
+        path = self._path(args.path)
 
         print(contents)
 
-        cmd = f'echo {" ".join(contents)} >> {path}'
+        #log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
 
-        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
-
-        self._cmd(cmd)
+        #self._cmd(cmd)
 
     
     """

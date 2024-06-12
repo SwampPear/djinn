@@ -30,6 +30,7 @@ commands that are not unix are valid to utilize.
     {
         "command": "touch",
         "usage": "touch [OPTION]... FILE...",
+        "description":"this is used to create a file"
         "options": [
             {
                 "flag": "--help",
@@ -115,10 +116,13 @@ commands that are not unix are valid to utilize.
     {
         "command": "write",
         "usage": "write [START_ROW]-[START_COL] [START_ROW]-[START_COL] [FILE] [CONTENT]",
-        "description": "only used to WRITE to a file",
-        "options": []
+        "description": "only used to WRITE to a file, uses tabs and newlines and DOES NOT write line by line",
+        "options": [],
+        "example": "write 0-1 4-5 main.py this is some text"
     }
 ]
+
+DO NOT ATTEMPT TO RUN ANY FILES!!!
 
 # Listing the steps
 
