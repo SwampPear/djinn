@@ -114,7 +114,8 @@ commands that are not unix are valid to utilize.
 [
     {
         "command": "write",
-        "usage": "write [START_ROW]:[START_COL] [START_ROW]:[START_COL] [FILE] [CONTENT]",
+        "usage": "write [START_ROW]-[START_COL] [START_ROW]-[START_COL] [FILE] [CONTENT]",
+        "description": "only used to WRITE to a file",
         "options": []
     }
 ]

@@ -1,6 +1,7 @@
 import re
 import json
 import argparse
+import subprocess
 from typing import List
 from .db import Database
 from .model import Model
@@ -123,6 +124,7 @@ class Controller:
         matches = re.findall(pattern, instructions, re.DOTALL)
 
         for match in matches:
+            print(json.loads(match))
             parsed.append(json.loads(match))
 
         return parsed
@@ -136,13 +138,7 @@ class Controller:
     """
     def _execute_instructions(self, query_result: str) -> None:
         # parse instructions
-        parsed_instructions = []
-
-        pattern = r'[\{\[]\s*"action":\s*"[^"]+",\s*"description":\s*"[^"]+"\s*[\}\]]'
-        matches = re.findall(pattern, query_result, re.DOTALL)
-
-        for match in matches:
-            parsed_instructions.append(json.loads(match))
+        parsed_instructions = self._parse_instructions(query_result)
 
         # execute parsed instructions
         for instruction in parsed_instructions:
@@ -157,6 +153,7 @@ class Controller:
     """
     def _execute_instruction(self, instruction: str) -> None:
         args = self.parser.parse_args(instruction.split())
+        print(args)
 
         if args.command == 'cd':
             self._cd(args)
@@ -201,6 +198,13 @@ class Controller:
         chmod_parser = subparsers.add_parser('chmod')
         chmod_parser.add_argument('permissions', type=str)
         chmod_parser.add_argument('path', type=str)
+
+        # write
+        write_parser = subparsers.add_parser('write')
+        write_parser.add_argument('start', type=str)
+        write_parser.add_argument('end', type=str)
+        write_parser.add_argument('path', type=str)
+        write_parser.add_argument('contents',  nargs='*')
     
         return parser
     
@@ -252,12 +256,13 @@ class Controller:
 
 
     """
-    Echoes to terminal.
+    Writes to a file.
     """
-    def _echo(self, args):
-        # TODO: take out in favor of 'write' custom command
-        contents = args.options[0:len(args.options) - 2]
+    def _write(self, args):
+        contents = args.options
         path = self._path(args.options[-1])
+
+        print(contents)
 
         cmd = f'echo {" ".join(contents)} >> {path}'
 
