@@ -34,10 +34,10 @@ class Controller:
         self.db = Database(DB_PATH)
         self.model = Model()
 
-        # state
         self.parser = self._init_parser()
         self.cwd = os.getcwd()
         self.stopped = False
+        self.tab_size = 4
 
 
     """
@@ -160,7 +160,7 @@ class Controller:
         args = self.parser.parse_args(instruction.split())
 
         if args.command == 'cd':
-            pass
+            self._cd(args)
         elif args.command == 'chmod':
             pass
         elif args.command == 'touch':
