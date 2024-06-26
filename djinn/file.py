@@ -66,7 +66,6 @@ class FileTree:
             for ls in os.listdir(path):
                 # create new node
                 fmt_path = f'{path}/{ls}'
-                print(fmt_path)
                 new_node = FileNode(fmt_path)
 
                 # add new node to children
@@ -77,3 +76,36 @@ class FileTree:
         else:                                           # file
             node.is_dir = False
             node.contents = 'read contents'
+
+
+    def tree(self) -> str:
+        contents = ''
+        level = 0
+        node = self.head
+
+        return self._tree(contents, level, node)
+
+        return contents
+
+    
+    """
+    Formats a tree representation of this file tree.
+    """
+    def _tree(self, contents, level, node) -> None:
+        output = contents
+
+        if level == 0:
+            output += f'. {node.name()}'
+        else:
+            output += level * '  '
+            output += f'|_ {node.name()}'
+
+        if node.is_dir:
+            output += '/\n'
+        else:
+            output += '\n'
+
+        for child in node.children:
+            output += self._tree(contents, level + 1, child)
+
+        return output
