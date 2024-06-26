@@ -42,20 +42,7 @@ class FileTree:
     """
     def __init__(self, path):
         self.head = self._init_head(path)
-        #print(self.tree(self.head))
 
-    
-    """
-    Called when casting a FileTree to a string.
-    """
-    def s(self, node=None) -> str:
-        if not node:
-            self.s(node=self.head)
-        else:
-            print(node.path)
-
-            for child in node.children:
-                self.s(node=child)
 
     """
     Formats a string defining the structure of this file tree.
