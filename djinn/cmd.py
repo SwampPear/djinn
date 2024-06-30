@@ -233,6 +233,15 @@ class CMD:
         with open(path, 'w') as file:
             file.write(prev_contents)
 
+    """
+    Reads from a file.
+    """
+    def _read(self, args):
+        path = self._path(args.path)
+
+        with open(path, 'r') as file:
+            return file.read()
+
 
     """
     Formats the correct path.
