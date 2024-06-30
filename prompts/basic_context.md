@@ -114,10 +114,10 @@ commands that are not unix are valid to utilize.
 [
     {
         "command": "write",
-        "usage": "write [START_ROW]-[START_COL] [START_ROW]-[START_COL] [FILE] [CONTENT]",
-        "description": "only used to WRITE to a file, uses tabs and newlines and DOES NOT write line by line",
+        "usage": "write [START] [END] [FILE] [CONTENT]",
+        "description": "only used to WRITE to a file, replaces start and end with content",
         "options": [],
-        "example": "write 0-1 4-5 main.py this is some text"
+        "example": "write 0 main.py this is some text"
     }
 ]
 

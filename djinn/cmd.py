@@ -151,11 +151,10 @@ class CMD:
         chmod_parser.add_argument('permissions', type=str)
         chmod_parser.add_argument('path', type=str)
 
-        # TODO: fix write
         # write
         write_parser = subparsers.add_parser('write')
-        write_parser.add_argument('start', type=str)
-        write_parser.add_argument('end', type=str)
+        write_parser.add_argument('start', type=int)
+        write_parser.add_argument('end', type=int)
         write_parser.add_argument('path', type=str)
         write_parser.add_argument('contents',  nargs='*')
     
@@ -210,36 +209,34 @@ class CMD:
 
         self._cmd(cmd)
 
+    
     """
     Writes to a file.
     """
     def _write(self, args):
-        # row, col
-        start = [i for i in args.start.split('-')]
-        end = [i for i in args.end.split('-')]
-        contents = ' '.join(args.contents)
         path = self._path(args.path)
+        contents = ''
+        prev_contents = ''
 
-        print(contents)
+        with open(path, 'r') as file:
+            prev_contents = file.read()
 
-        #log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+        print(args.start)
+        print(prev_contents)
 
-        #self._cmd(cmd)
+        temp_contents = prev_contents[:args.start] 
+        temp_contents += contents
+        temp_contents += prev_contents[args.end:]
 
-    
+        prev_contents = temp_contents
+
+        with open(path, 'w') as file:
+            file.write(prev_contents)
+
+
     """
     Formats the correct path.
     """
     def _path(self, path: str) -> str:
         # TODO: implement path sanitizing
         return f'{ROOT}/{path}'
-    
-
-    """
-    Edits a file.
-    """
-    def _edit_file(self, contents, path, replace=None):
-        # TODO: replace with write
-        with open(path, 'w') as file:
-            file.write(contents)
-
