@@ -255,8 +255,11 @@ class Controller:
     """
     def _ls(self, args):
         # TODO: implement
-        pass
+        cmd = f'mkdir {self._path(args.path)}'
 
+        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+
+        self._cmd(cmd)
 
     """
     Writes to a file.
