@@ -1,0 +1,30 @@
+html,
+body {
+    background-color: rgb(14, 14, 14);
+    margin: 0;
+    padding: .5rem;
+}
+
+.text__green,
+.text__red,
+.text__yellow,
+.text__gray {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+}
+
+.text__green {
+    color: rgb(103, 219, 99);
+}
+
+.text__red {
+    color: rgb(216, 66, 66);
+}
+
+.text__yellow {
+    color: rgb(235, 217, 85);
+}
+
+.text__gray {
+    color: rgb(175, 175, 175);
+}
