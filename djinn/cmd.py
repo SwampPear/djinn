@@ -2,9 +2,6 @@ import re
 import json
 import argparse
 import subprocess
-from typing import List
-from .db import Database
-from .model import Model
 from .log import log, Style
 from settings import *
 
@@ -18,7 +15,7 @@ class Action:
     description: str
 
 
-class Controller:
+class CMD:
     """
     Controls program logic and handles all processes.
     """
@@ -88,7 +85,7 @@ class Controller:
     Params:
         query_result - result of the query with encoded instructions
     """
-    def _execute_instructions(self, query_result: str) -> None:
+    def execute_instructions(self, query_result: str) -> None:
         # parse and execute instructions
         parsed_instructions = self._parse_instructions(query_result)
 
