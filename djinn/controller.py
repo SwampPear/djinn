@@ -1,22 +1,20 @@
-import re
-import json
-import argparse
-import subprocess
 from typing import List
 from .cmd import CMD
 from .db import Database
 from .model import Model
 from .log import log, Style
 from settings import *
+import keyboard
 
 
 class State:
     """
     State of the controller.
     """
-    RUNNING = 0     # already running
-    START   = 1     # initially starting
-    STOP    = 2     # initially stopping
+    START   = 0
+    IDLE    = 1
+    RUNNING = 2
+    STOP    = 3
 
 
 class Action:
@@ -36,6 +34,10 @@ class Controller:
         self.model = Model()
         self.cmd = CMD()
 
+        self.stopped = False
+        self.input_buffer = ''
+
+
 
     """
     Main execution loop for this controller.
@@ -46,6 +48,9 @@ class Controller:
         while not self.stopped:
             if state == State.START:
                 # buildup
+                state = State.IDLE
+
+            elif state == State.IDLE:
                 state = State.RUNNING
 
             elif state == State.RUNNING:

@@ -1,7 +1,9 @@
+import os
 import re
 import json
 import argparse
 import subprocess
+from typing import List
 from .log import log, Style
 from settings import *
 
@@ -22,7 +24,6 @@ class CMD:
     def __init__(self):
         self.parser = self._init_parser()
         self.cwd = os.getcwd()
-        self.stopped = False
         self.tab_size = 4
 
     """
@@ -166,7 +167,6 @@ class CMD:
     """
     def _cd(self, args):
         self.cwd = f'{self.cwd}/{args.path}'
-        print(self.cwd)
 
         log(Style.green, Style.bold, '[cmd]', Style.end, ' ', self.cwd, '\n')
 
@@ -242,22 +242,4 @@ class CMD:
         # TODO: replace with write
         with open(path, 'w') as file:
             file.write(contents)
-
-        """
-        # TODO: implement file buffer
-        file_contents = ''
-
-        with open(path, 'r', encoding='utf-8') as file:
-            file_contents = file.read()
-
-            if replace:
-                x_c, x_r = replace[0]
-                y_c, _r = replace[0]
-                pass
-            else:
-                file_contents = contents
-
-        with open(path, 'w') as file:
-            file.write(file_contents)
-        """
 
