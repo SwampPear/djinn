@@ -214,24 +214,35 @@ class CMD:
     Writes to a file.
     """
     def _write(self, args):
+        # sanitize path
         path = self._path(args.path)
-        contents = ''
+
+        # format contents
+        contents = ' '.join(args.contents)
+
+        # insert new contents into previous
         prev_contents = ''
 
-        with open(path, 'r') as file:
-            prev_contents = file.read()
+        # logs
+        cmd = f'write {args.start} {args.end} {args.path} {contents}' 
+        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
 
-        print(args.start)
-        print(prev_contents)
+        try:
+            with open(path, 'r') as file:
+                prev_contents = file.read()
 
-        temp_contents = prev_contents[:args.start] 
-        temp_contents += contents
-        temp_contents += prev_contents[args.end:]
+            temp_contents = prev_contents[:args.start] 
+            temp_contents += contents
+            temp_contents += prev_contents[args.end:]
 
-        prev_contents = temp_contents
+            prev_contents = temp_contents
 
-        with open(path, 'w') as file:
-            file.write(prev_contents)
+            # write contents
+            with open(path, 'w') as file:
+                file.write(prev_contents)
+        except FileNotFoundError:
+            log(Style.red, Style.bold, '[err]', Style.end, ' ', 'no such file', '\n')
+
 
     """
     Reads from a file.
