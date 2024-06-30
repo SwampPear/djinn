@@ -2,7 +2,7 @@ import subprocess
 
 
 def clear_workspace() -> None:
-    # Execute the command
+    # process command and digest output
     process = subprocess.Popen(
         'rm -rf workspace/*',
         shell=True, 
@@ -10,15 +10,13 @@ def clear_workspace() -> None:
         stderr=subprocess.PIPE
     )
 
-    # Get the output and error (if any)
     out, err = process.communicate()
 
-    # Decode bytes to string (assuming utf-8 encoding)
-    output_str = out.decode('utf-8')
-    error_str = err.decode('utf-8')
+    out_msg = out.decode('utf-8')
+    err_msg = err.decode('utf-8')
 
-    print(f'Output: {output_str}')
-    print(f'Error: {error_str}')
+    print(f'Output: {out_msg}')
+    print(f'Error: {err_msg}')
 
 
 if __name__ == '__main__':
