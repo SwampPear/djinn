@@ -28,3 +28,30 @@ body {
 .text__gray {
     color: rgb(175, 175, 175);
 }
+
+.prompt__container {
+    align-items: center;
+    bottom: 0;
+    display: flex;
+    height: 4rem;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    width: 100vw;
+}
+
+.prompt {
+    background-color: rgb(40, 40, 40);
+    border: none;
+    border-radius: .5rem;
+    color: rgb(192, 192, 192);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    height: 2rem;
+    width: 98vw;
+}
+
+.prompt:focus {
+    outline: none;
+}
