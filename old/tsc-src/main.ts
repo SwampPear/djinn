@@ -64,4 +64,12 @@ document.addEventListener( 'DOMContentLoaded', () => {
     }
     
     data.forEach((el) => renderLog( el ))
+
+    // main loop
+    // TODO: state should be available through api, copying run structure
+    let stop: boolean = false
+
+    while (!stop) {
+
+    }
 })

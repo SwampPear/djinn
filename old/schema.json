@@ -5,7 +5,7 @@
             "columns": [
                 {
                     "name": "id",
-                    "type": "varchar",
+                    "type": "int",
                     "pk": true,
                     "nullable": false,
                     "autoincrement": true
@@ -17,7 +17,19 @@
                 },
                 {
                     "name": "contents",
-                    "char": "varchar"
+                    "type": "varchar"
+                }
+            ]
+        },
+        {
+            "name": "project",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "int"
+                },
+                {
+                    "name"
                 }
             ]
         }
