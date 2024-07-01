@@ -1,6 +1,7 @@
 # python
 env/
 __pycache__/
+djinn-env/
 
 # database
 db/

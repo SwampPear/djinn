@@ -1,27 +1,12 @@
-# Use an existing base image
-FROM ubuntu:latest
+# syntax=docker/dockerfile:1
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+FROM python:3.8-slim-buster
 
-# Update packages and install dependencies
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set the working directory inside the container
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt --break-system-packages
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
-# Copy your application code into the container
 COPY . .
 
-# Expose the port on which your Flask app runs (default is 5000)
-EXPOSE 5000
-
-# Specify the command to run when the container starts
-CMD ["python", "djinn.py"]
+CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0", "--port=8000"]

@@ -1,10 +1,12 @@
-import sys
-from djinn import Controller
+from flask import Flask
 
 
-if __name__ == '__main__':
-    prompt = sys.argv[1]
+app = Flask(__name__)
 
-    controller = Controller()
+@app.route('/')
+def hello_geek():
+    return '<h1>Hello from Flask & Docker</h2>'
 
-    controller.run()
+
+if __name__ == "__main__":
+    app.run(debug=True, host='0.0.0.0')
