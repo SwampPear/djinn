@@ -2,7 +2,11 @@ from flask import Flask, render_template
 import os
 
 
-app = Flask(__name__, template_folder='/app/interface/templates')
+app = Flask(
+    __name__, 
+    template_folder='/app/interface/templates',
+    static_folder='/app/interface/static')
+
 
 @app.route('/')
 def hello_geek():
