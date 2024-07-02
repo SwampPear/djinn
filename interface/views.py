@@ -32,23 +32,6 @@ def sprint():
         return 'delete'
     else:
         return 'request method not accepted'
-    
-
-# iteration
-iteration_view = Blueprint('iteration_view', __name__)
-
-@sprint_view.route('/api/v1/iteration')
-def iteration():
-    if request.method == 'POST':
-        return 'post'
-    elif request.method == 'GET':
-        return 'get'
-    elif request.method == 'PATCH':
-        return 'patch'
-    elif request.method == 'DELETE':
-        return 'delete'
-    else:
-        return 'request method not accepted'
 
 
 # log
