@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var data = [
         {
             'type': ApiLogType.VALID,
-            'msg': 'this is a good example'
+            'msg': 'this is a good exampleadsfgasdjh'
         },
         {
             'type': ApiLogType.ERROR,
