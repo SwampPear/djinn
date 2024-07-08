@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         {
             'type': ApiLogType.ERROR,
-            'msg': 'this is a warningerror example'
+            'msg': 'this is an error example'
         },
         {
             'type': ApiLogType.WARNING,
