@@ -1,0 +1,3 @@
+DB_PATH: '/data/data.db'
+TEST_DB_PATH: '/data/test.db'
+
