@@ -1,5 +1,5 @@
 from djinn.cli import CLI
-import os
+
 
 def main():
     cli = CLI()
