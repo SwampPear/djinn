@@ -4,22 +4,28 @@ from tkinter import ttk
 
 class Style:
     BLACK       = '#0E0E0E'
-    DARKGRAY    = '#3B3B3B'
+    DARKGRAY    = '#282828'
 
 
 class InputBar(ttk.Frame):
     def __init__(self, parent):
         self.parent = parent
 
-        self.input_bar_style = ttk.Style()
-        self.input_bar_style.configure('input-bar__container.TFrame', background='#ff0000')
+        # styling
+        self.input_bar__container = ttk.Style()
+        self.input_bar__container.configure('input-bar__container.TFrame', background='transparent')
 
+        self.input_bar = ttk.Style()
+        self.input_bar.configure('input-bar.TEntry', background=Style.DARKGRAY)
+
+        # container frame (self)
         super().__init__(self.parent, padding=8, style='input-bar__container.TFrame')
-        
         self.grid()
         self.pack(fill=X)
 
-        self.input_bar = ttk.Entry(self).grid(row=0, column=0, sticky=E + W)
+        # input bar
+        self.input_bar = ttk.Entry(self, style='input-bar.TEntry')
+        self.input_bar.grid(row=0, column=0, sticky=E + W)
         self.grid_columnconfigure(0, weight=1)
 
         #ttk.Button(self, text="Quit", command=self.parent.destroy).grid(column=0, row=0)
