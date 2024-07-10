@@ -37,9 +37,26 @@ class CLI:
 
 
     def _new(self, project, workspace):
-        print('new')
-        print(project)
-        print(workspace)
+        dirs = os.listdir('/var/db/Djinn/projects')
+
+        if project in dirs:
+            print('project name already taken')
+        else:
+            # init project dir
+            os.mkdir(f'/var/db/Djinn/projects/{project}')
+            
+            # init data
+            with open(f'/var/db/Djinn/projects/{project}/data', 'w') as file;
+                file.write('')
+
+            # init project settings
+            with open(f'/var/db/Djinn/projects/{project}/settings.json', 'w') as file:
+                contents = {
+                    "project": project,
+                    "workspace": workspace
+                }
+
+                json.dump(contents, file)
 
 
     def _start(self, project, workspace):
