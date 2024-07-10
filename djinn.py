@@ -1,12 +1,12 @@
 from djinn.cli import CLI
-from djinn.interface import Interface
+from djinn.interface import App
 
 
 def main():
     #cli = CLI()
     #cli.run()
-    interface = Interface()
-    interface.run()
+    app = App()
+    app.run()
 
 
 if __name__ == '__main__':
