@@ -12,14 +12,13 @@ class InputBar(ttk.Frame):
         self.parent = parent
 
         # styling
-        self.input_bar__container = ttk.Style()
-        self.input_bar__container.configure('input-bar__container.TFrame', background='transparent')
-
-        self.input_bar = ttk.Style()
-        self.input_bar.configure('input-bar.TEntry', background=Style.DARKGRAY)
+        self.style = ttk.Style()
+        self.style.theme_use('clam')
+        self.style.configure('input-bar-container.TFrame', background='#0E0E0E')
+        self.style.configure('input-bar.TEntry', fieldbackground='#fcfcfc', relief='flat')
 
         # container frame (self)
-        super().__init__(self.parent, padding=8, style='input-bar__container.TFrame')
+        super().__init__(self.parent, padding=8, style='input-bar-container.TFrame')
         self.grid()
         self.pack(fill=X)
 
@@ -31,13 +30,29 @@ class InputBar(ttk.Frame):
         #ttk.Button(self, text="Quit", command=self.parent.destroy).grid(column=0, row=0)
 
 
+class LogContainer(ttk.Frame):
+    def __init__(self, parent):
+        self.parent = parent
+
+        # styling
+        self.style = ttk.Style()
+        self.style.theme_use('clam')
+        self.style.configure('log-container.TFrame', background='red')
+        self.style.configure('log-message.TText', color='white')
+
+        # container frame (self)
+        super().__init__(self.parent, padding=8, style='log-container.TFrame')
+        self.grid()
+
+
 class App:
     def __init__(self):
         self.root = Tk()
         self.root.title('Djinn')
         self.root.geometry('725x450+700+200')
-        self.root.configure(bg=Style.BLACK)
+        self.root.configure(bg='#0E0E0E')
 
+        self.log_container = LogContainer(self.root)
         self.input_bar = InputBar(self.root)
 
 
