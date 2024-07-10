@@ -11,8 +11,11 @@ class CLI:
         # command
         self.parser.add_argument(
             'command', 
-            choices=['start'], 
-            default='start',
+            choices=[
+                'run',
+                'new'
+            ], 
+            default='new',
             help='basic command for djinn')
 
         # workspace
@@ -25,6 +28,7 @@ class CLI:
         # project name
         self.parser.add_argument(
             '--project', '-p',
+            required=False,
             help='sets a project name')
         
     def run(self) -> None:
@@ -33,6 +37,14 @@ class CLI:
 
         command = args.command
         workspace = args.workspace
+        project = args.project
 
-        if command == 'start':
-            print(workspace)
+        if command == 'new':
+            # check if project exists
+            if not project:
+                print('project should be entered')
+
+            
+            # create new project dir
+            # set settings.json
+            print(project)
