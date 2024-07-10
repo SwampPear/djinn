@@ -47,7 +47,7 @@ class CLI:
             os.mkdir(f'/var/db/Djinn/projects/{project}')
             
             # init data
-            with open(f'/var/db/Djinn/projects/{project}/data', 'w') as file;
+            with open(f'/var/db/Djinn/projects/{project}/data', 'w') as file:
                 file.write('')
 
             # init project settings
