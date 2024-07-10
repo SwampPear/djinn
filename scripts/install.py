@@ -1,4 +1,5 @@
 import subprocess
+import os
 import json
 
 base_user_settings = {
@@ -7,34 +8,30 @@ base_user_settings = {
 
 
 def main():
+    djinn_dir = f'{os.path.expanduser("~")}/Library/Application\ Support/Djinn'
+    
     # init lib dir
-    subprocess.call(['sudo', 'rm',  '-rf', '/Library/Djinn'])
-    subprocess.call(['sudo', 'mkdir',  '/Library/Djinn'])
-    subprocess.call(['sudo', 'chmod',  '777', '/Library/Djinn'])
+    subprocess.call(['rm',  '-rf', djinn_dir])
+    subprocess.call(['mkdir',  djinn_dir])
 
     # copy start script
-    subprocess.call(['sudo', 'cp', './djinn.py', '/Library/Djinn/'])
-
-    # init data dir
-    subprocess.call(['sudo', 'rm',  '-rf', '/var/db/Djinn'])
-    subprocess.call(['sudo', 'mkdir',  '/var/db/Djinn'])
-    subprocess.call(['sudo', 'chmod',  '777', '/var/db/Djinn'])
+    subprocess.call(['cp', './djinn.py', djinn_dir])
 
     # init user data dir
-    subprocess.call(['sudo', 'rm',  '-rf', '/var/db/Djinn/user'])
-    subprocess.call(['sudo', 'mkdir',  '/var/db/Djinn/user'])
+    subprocess.call(['rm',  '-rf', f'{djinn_dir}/user'])
+    subprocess.call(['mkdir',  f'{djinn_dir}/user'])
 
-    # TODO: fix permissions with this
     # init user settings
-    with open('/var/db/Djinn/user/settings.json', 'w') as out:
-        subprocess.call(['sudo', 'echo', json.dumps(base_user_settings)], stdout=out)
+    subprocess.call(['touch', '~/Library/Application\ Support/Djinn/user/settings.json'])
+    with open('~/Library/Application\ Support/Djinn/user/settings.json', 'w') as file:
+        json.dump(base_user_settings, file)
 
     # init projects data dir
-    subprocess.call(['sudo', 'rm',  '-rf', '/var/db/Djinn/projects'])
-    subprocess.call(['sudo', 'mkdir',  '/var/db/Djinn/projects'])
+    subprocess.call(['sudo', 'rm',  '-rf', '~/Library/Application\ Support/Djinn/projects'])
+    subprocess.call(['sudo', 'mkdir',  '~/Library/Application\ Support/Djinn/projects'])
 
     # copy lib to lib dir
-    subprocess.call(['sudo', 'cp', '-r', './djinn', '/Library/Djinn/djinn'])
+    subprocess.call(['sudo', 'cp', '-r', './djinn', '~/Library/Application\ Support/Djinn/djinn'])
 
     # TODO: install pip requirements when necessary (requirements.txt)
 
