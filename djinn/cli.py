@@ -1,57 +1,55 @@
-from argparse import ArgumentParser
 import os
+from argparse import ArgumentParser
 import json
+from .utils import DJINN_DIR
 
 
 class CLI:
+    """
+    Handles startup command and shell interaction.
+    """
     def __init__(self):
-        self.parser = self._init_parser()
+        self.arg_parser = self._init_parser()
 
 
-    def _init_parser(self):
-        parser = ArgumentParser(description='Djinn CLI')
+    """
+    Initializes the argument parser for terminal command.
+    """
+    def _init_parser(self) -> ArgumentParser:
+        arg_parser = ArgumentParser(description='Djinn CLI')
 
-        # command
-        parser.add_argument(
-            'command',
-            choices=[
-                'new',
-                'start',
-                'rm'
-            ], 
-            help='basic command for djinn')
-
-        # project
-        parser.add_argument(
-            'project',
-            help='name of a project'
-        )
-
-        # workspace
-        parser.add_argument(
+        arg_parser.add_argument('command', choices=['new', 'start', 'rm'])
+        arg_parser.add_argument('project')
+        arg_parser.add_argument(
             '--workspace', '-w',
             default=os.getcwd(),
-            required=False,
-            help='workspace dir')
+            required=False)
 
-        return parser
+        return arg_parser
 
 
-    def _new(self, project, workspace):
-        dirs = os.listdir('/')
+    """
+    Creates a new Djinn project.
+
+    Params:
+        project - name of project
+        workspace - workspace directory
+    """
+    def _new(self, project: str, workspace: str) -> None:
+        dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project in dirs:
             print('project name already taken')
         else:
             # init project dir
-            os.mkdir(f'/var/db/Djinn/projects/{project}')
+            os.mkdir(f'{DJINN_DIR}/projects/{project}')
             
             # init data
-            with open(f'/var/db/Djinn/projects/{project}/data', 'w') as file:
+            with open(f'{DJINN_DIR}/projects/{project}/data', 'w') as file:
                 file.write('')
 
             # init project settings
-            with open(f'/var/db/Djinn/projects/{project}/settings.json', 'w') as file:
+            with open(f'{DJINN_DIR}/projects/{project}/settings.json', 'w') as file:
                 contents = {
                     "project": project,
                     "workspace": workspace
@@ -74,7 +72,7 @@ class CLI:
         
     def run(self) -> None:
         # parse args
-        args = self.parser.parse_args()
+        args = self.arg_parser.parse_args()
 
         command = args.command
         project = args.project
