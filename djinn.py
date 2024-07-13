@@ -1,9 +1,9 @@
-from djinn.app import App
+from djinn.cli import CLI
 
 
 def main():
-    app = App()
-    app.run()
+    cli = CLI()
+    cli.run()
 
 
 if __name__ == '__main__':

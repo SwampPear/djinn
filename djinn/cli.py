@@ -1,6 +1,7 @@
 import os
 from argparse import ArgumentParser
 import json
+import shutil
 from .utils import DJINN_DIR
 
 
@@ -58,30 +59,46 @@ class CLI:
                 json.dump(contents, file)
 
 
-    def _start(self, project, workspace):
-        print('start')
-        print(project)
-        print(workspace)
+    """
+    Starts up a djinn app.
+
+    Params:
+        project - name of project
+    """
+    def _start(self, project: str) -> None:
+        dirs = os.listdir(f'{DJINN_DIR}/projects')
+
+        if project not in dirs:
+            print('project not found')
+        else:
+            print('djinn shell starts here')
 
 
-    def _rm(self, project, workspace):
-        print('rm')
-        print(project)
-        print(workspace)
+    """
+    Removes a djinn project.
+
+    Params:
+        project - name of project
+    """
+    def _rm(self, project: str) -> None:
+        dirs = os.listdir(f'{DJINN_DIR}/projects')
+
+        if project not in dirs:
+            print('project not found')
+        else:
+            shutil.rmtree(f'{DJINN_DIR}/projects/{project}')
         
-        
+    
+    """
+    Runs the djinn cli.
+    """
     def run(self) -> None:
-        # parse args
         args = self.arg_parser.parse_args()
 
-        command = args.command
-        project = args.project
-        workspace = args.workspace
-        project = args.project
-
-        if command == 'new':
-            self._new(project, workspace)
-        elif command == 'start':
-            self._start(project, workspace)
-        elif command == 'rm':
-            self._rm(project, workspace)
+        # route commands
+        if args.command == 'new':
+            self._new(args.project, args.workspace)
+        elif args.command == 'start':
+            self._start(args.project)
+        elif args.command == 'rm':
+            self._rm(args.project)
