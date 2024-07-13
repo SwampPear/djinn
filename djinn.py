@@ -1,10 +1,7 @@
-from djinn.cli import CLI
-from djinn.interface import App
+from djinn.app import App
 
 
 def main():
-    #cli = CLI()
-    #cli.run()
     app = App()
     app.run()
 

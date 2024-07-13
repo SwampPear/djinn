@@ -38,7 +38,7 @@ class CLI:
 
 
     def _new(self, project, workspace):
-        dirs = os.listdir('/var/db/Djinn/projects')
+        dirs = os.listdir('/')
 
         if project in dirs:
             print('project name already taken')
