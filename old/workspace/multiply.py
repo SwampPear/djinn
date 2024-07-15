@@ -1,1 +1,0 @@
-'d'return a * b'multiply(a, b):'
