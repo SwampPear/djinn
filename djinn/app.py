@@ -31,7 +31,7 @@ class App:
 
         while state != STATE.STOP:
             if state == STATE.IDLE:
-                term.poll()
+                prompt = term.poll()
                 state = STATE.RUNNING
             elif state == STATE.RUNNING:
                 print('running here')

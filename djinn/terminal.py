@@ -1,5 +1,26 @@
-from typing import Self
+from typing import Self, List
 import sys
+
+
+"""
+Formats text with ASCII styling.
+
+Params:
+    txt - text to format
+    style - styles to apply
+"""
+def text(txt: str, style: List[str] = []) -> str:
+    return f"{''.join(style)}{txt}{STYLE.END}"
+
+
+"""
+Writes some text to the terminal.
+
+Params:
+    txt - text to write
+"""
+def write(txt: str) -> None:
+    sys.stdout.write(txt)
 
 
 class STYLE:
@@ -29,11 +50,9 @@ class Terminal:
     """
     Waits for user input
     """
-    def poll(self) -> str:
-        # prompt
-        sys.stdout.write(f'{STYLE.BOLD}Djinn ({self.project}) % {STYLE.END}')
+    def prompt(self) -> str:
+        write(text(f'Djinn ({self.project}) % ', [STYLE.BOLD]))
 
-        # input
-        _prompt_in = input()
+        prompt = input()
 
-        return _prompt_in
+        return prompt
