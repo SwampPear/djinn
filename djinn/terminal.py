@@ -17,11 +17,7 @@ class Terminal:
 
 
     def poll(self):
-        sys.stdout.write(f'{STYLE.BOLD}{self.project} > {STYLE.END}')
+        sys.stdout.write(f'{STYLE.BOLD}Djinn ({self.project}) % {STYLE.END}')
 
         prompt = input()
-
-
-def delete_line():
-    sys.stdout.write("\033[F")  # Move cursor up one line
-    sys.stdout.write("\033[K")  # Clear to the end of line
+        print(prompt)
