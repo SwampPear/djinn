@@ -1,7 +1,9 @@
-import os
-from argparse import ArgumentParser
 import json
+import os
 import shutil
+from argparse import ArgumentParser
+
+from .app import App
 from .utils import DJINN_DIR
 
 
@@ -58,6 +60,9 @@ class CLI:
 
                 json.dump(contents, file)
 
+            # startup shell
+            self._start(project)
+
 
     """
     Starts up a djinn app.
@@ -71,7 +76,8 @@ class CLI:
         if project not in dirs:
             print('project not found')
         else:
-            print('djinn shell starts here')
+            app = App(project)
+            app.run()
 
 
     """
