@@ -1,7 +1,11 @@
+from typing import Self
 import sys
 
 
 class STYLE:
+    """
+    ASCII terminal styles.
+    """
     CYAN = '\033[96m'
     GREEN = '\033[92m'
     YELLOW = '\033[93m'
@@ -11,13 +15,25 @@ class STYLE:
 
 
 class Terminal:
-    def __init__(self, project):
+    """
+    Handles terminal interaction.
+
+    Params:
+        project - name of the working project
+    """
+    def __init__(self, project: str) -> Self:
         self.project = project
         self.stdin = ''
 
 
-    def poll(self):
+    """
+    Waits for user input
+    """
+    def poll(self) -> str:
+        # prompt
         sys.stdout.write(f'{STYLE.BOLD}Djinn ({self.project}) % {STYLE.END}')
 
-        prompt = input()
-        print(prompt)
+        # input
+        _prompt_in = input()
+
+        return _prompt_in

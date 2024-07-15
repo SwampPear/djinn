@@ -1,8 +1,11 @@
-from .terminal import Terminal, STYLE
+from .terminal import Terminal
 
 
 
 class STATE:
+    """
+    App state.
+    """
     IDLE = 0
     RUNNING = 1
     STOP = 2
@@ -11,11 +14,17 @@ class STATE:
 class App:
     """
     Interactive djinn app.
+
+    Params:
+        project - the working project
     """
     def __init__(self, project: str):
         self.project = project
 
 
+    """
+    Runns the Djinn app.
+    """
     def run(self):
         state = STATE.IDLE
         term = Terminal(self.project)
