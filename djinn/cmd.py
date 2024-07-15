@@ -5,8 +5,6 @@ import argparse
 import subprocess
 from typing import List
 from .log import log, Style
-from settings import *
-
 
 
 class Action:
