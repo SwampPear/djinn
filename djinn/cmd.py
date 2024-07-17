@@ -4,7 +4,7 @@ import json
 import argparse
 import subprocess
 from typing import List
-from .log import log, Style
+from .terminal import STYLE, text, log
 
 
 class Action:
@@ -164,8 +164,8 @@ class CMD:
     """
     def _cd(self, args):
         self.cwd = f'{self.cwd}/{args.path}'
-
-        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', self.cwd, '\n')
+        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
+        log(text(f'{self.cwd}\n', []))
 
     """
     Changes the permissions of a file.
@@ -181,7 +181,8 @@ class CMD:
     def _touch(self, args):
         cmd = f'touch {self._path(args.path)}'
 
-        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
+        log(text(f'{cmd}\n', []))
 
         self._cmd(cmd)
 
@@ -192,7 +193,7 @@ class CMD:
     def _mkdir(self, args):
         cmd = f'mkdir {self._path(args.path)}'
 
-        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+        log(text(f'{cmd}\n', []))
 
         self._cmd(cmd)
 
@@ -203,7 +204,8 @@ class CMD:
         # TODO: implement
         cmd = f'mkdir {self._path(args.path)}'
 
-        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
+        log(text(f'{cmd}\n', []))
 
         self._cmd(cmd)
 
@@ -223,7 +225,9 @@ class CMD:
 
         # logs
         cmd = f'write {args.start} {args.end} {args.path} {contents}' 
-        log(Style.green, Style.bold, '[cmd]', Style.end, ' ', cmd, '\n')
+        
+        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
+        log(text(f'{cmd}\n', []))
 
         try:
             with open(path, 'r') as file:
@@ -239,7 +243,8 @@ class CMD:
             with open(path, 'w') as file:
                 file.write(prev_contents)
         except FileNotFoundError:
-            log(Style.red, Style.bold, '[err]', Style.end, ' ', 'no such file', '\n')
+            log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
+            log(text(f'{cmd}\n', []))
 
 
     """
@@ -257,4 +262,4 @@ class CMD:
     """
     def _path(self, path: str) -> str:
         # TODO: implement path sanitizing
-        return f'{ROOT}/{path}'
+        return f'{""}/{path}'

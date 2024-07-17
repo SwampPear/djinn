@@ -19,7 +19,7 @@ Writes some text to the terminal.
 Params:
     txt - text to write
 """
-def write(txt: str) -> None:
+def log(txt: str) -> None:
     sys.stdout.write(txt)
 
 
@@ -51,7 +51,7 @@ class Terminal:
     Waits for user input
     """
     def prompt(self) -> str:
-        write(text(f'Djinn ({self.project}) % ', [STYLE.BOLD]))
+        log(text(f'Djinn ({self.project}) % ', [STYLE.BOLD]))
 
         prompt = input()
 

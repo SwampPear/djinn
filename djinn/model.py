@@ -3,7 +3,7 @@ import subprocess
 import threading
 import json
 from .utils import *
-from .log import *
+
 
 # TODO: implement model memory (prompt caching) 
 # could possibly be handled through 'messages' field of api call
