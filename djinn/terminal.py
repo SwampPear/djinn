@@ -51,8 +51,6 @@ class Terminal:
     Waits for user input
     """
     def prompt(self) -> str:
-        log(text(f'Djinn ({self.project}) % ', [STYLE.BOLD]))
-
-        prompt = input()
+        prompt = input(text(f'Djinn ({self.project}) % ', [STYLE.BOLD]))
 
         return prompt

@@ -107,6 +107,7 @@ class Model:
         while self.llama3_thread_pid == PidStatus.NOT_INITIALIZED:
             pass
 
+
     """
     Formats a prompt into and intermediate representation.
     """

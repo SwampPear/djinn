@@ -49,15 +49,18 @@ class App:
             if state == STATE.IDLE:
                 prompt = term.prompt()
 
+                """
                 if prompt:
                     state = STATE.RUNNING
                 else:
                     state = STATE.IDLE
+                """
+                state = STATE.RUNNING
               
             elif state == STATE.RUNNING:
                 # query model for actions and execute
-                result = self.model.query(prompt)
-                self.cmd.execute_instructions(result)
+                # result = self.model.query(prompt)
+                #self.cmd.execute_instructions(result)
 
                 # 1. begin with prompt
                 # 2. query model with (formatted) prompt

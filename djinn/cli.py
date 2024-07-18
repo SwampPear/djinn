@@ -60,9 +60,6 @@ class CLI:
 
                 json.dump(contents, file)
 
-            # startup shell
-            self._start(project)
-
 
     """
     Starts up a djinn app.
