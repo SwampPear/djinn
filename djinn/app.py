@@ -5,8 +5,7 @@ from .model import Model
 from .utils import DJINN_DIR
 
 
-
-class STATE:
+class State:
     """
     App state.
     """
@@ -35,19 +34,21 @@ class App:
         self.db = Database(f'{DJINN_DIR}/projects/{project}/data')
         self.model = Model()
         self.cmd = CMD()
+        self.terminal = Terminal(self.project)
+
+        self.state = State.STOP
 
 
     """
     Runns the Djinn app.
     """
     def run(self) -> None:
-        state = STATE.IDLE
-        term = Terminal(self.project)
-        prompt = ''
+        self.state = State.IDLE
 
-        while state != STATE.STOP:
-            if state == STATE.IDLE:
-                prompt = term.prompt()
+        while self.state != State.STOP:
+            if self.state == State.IDLE:
+                #prompt = term.prompt()
+                prompt = input()
 
                 """
                 if prompt:
@@ -55,9 +56,9 @@ class App:
                 else:
                     state = STATE.IDLE
                 """
-                state = STATE.RUNNING
+                self.state = State.RUNNING
               
-            elif state == STATE.RUNNING:
+            elif self.state == State.RUNNING:
                 # query model for actions and execute
                 # result = self.model.query(prompt)
                 #self.cmd.execute_instructions(result)
@@ -69,7 +70,7 @@ class App:
                 # 5. repeat 2-4 until effectiveness sufficient
                 # 6. repeat 1-5 until process terminated 
                 
-                state = STATE.STOP
+                self.state = State.STOP
 
         self._quit
 
@@ -79,4 +80,3 @@ class App:
     """
     def _quit(self) -> None:
         self.model.quit()
-        #self.stopped = True

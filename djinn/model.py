@@ -3,6 +3,7 @@ import subprocess
 import threading
 import json
 from .utils import *
+from .terminal import log, text, STYLE
 
 
 # TODO: implement model memory (prompt caching) 
@@ -22,6 +23,8 @@ class Model:
     """
     def __init__(self) -> None:
         self.llama3_thread_pid = PidStatus.NOT_INITIALIZED
+
+        log(text('Initializing model...\n', [STYLE.GREEN, STYLE.BOLD]))
         self.llama3_thread = self._init_llama()
 
 
