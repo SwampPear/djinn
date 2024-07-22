@@ -87,8 +87,8 @@ class CLI:
             print('project not found')
         else:
             print("prompt here")
-            #app = App(project)
-            #app.run()
+            app = App(project, prompt)
+            app.run()
 
 
     """

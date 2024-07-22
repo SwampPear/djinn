@@ -28,9 +28,11 @@ class App:
 
     Params:
         project - the working project
+        prompt - a prompt
     """
-    def __init__(self, project: str):
+    def __init__(self, project: str, prompt: str):
         self.project = project
+        self.prompt = prompt
         self.db = Database(f'{DJINN_DIR}/projects/{project}/data')
         self.model = Model()
         self.cmd = CMD()
@@ -43,43 +45,22 @@ class App:
     Runns the Djinn app.
     """
     def run(self) -> None:
-        self.state = State.IDLE
+        result = self.model.query(self.prompt)
 
-        while self.state != State.STOP:
-            state = self.state
+        print(result)
 
-            if state == State.IDLE:
-                #prompt = term.prompt()
-                #prompt = input()
-                #print(prompt)
-                #prompt = self.terminal.prompt()
-                a = input()
-                print(a)
+        # query model for actions and execute
+        # result = self.model.query(prompt)
+        #self.cmd.execute_instructions(result)
 
-                """
-                if prompt:
-                    self.state = State.RUNNING
-                else:
-                    self.state = State.IDLE
-                """
-                
-                self.state = State.RUNNING
-              
-            elif state == State.RUNNING:
-                # query model for actions and execute
-                # result = self.model.query(prompt)
-                #self.cmd.execute_instructions(result)
+        # 1. begin with prompt
+        # 2. query model with (formatted) prompt
+        # 3. iterate over and execute actions, feed output back into model
+        # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
+        # 5. repeat 2-4 until effectiveness sufficient
+        # 6. repeat 1-5 until process terminated 
 
-                # 1. begin with prompt
-                # 2. query model with (formatted) prompt
-                # 3. iterate over and execute actions, feed output back into model
-                # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
-                # 5. repeat 2-4 until effectiveness sufficient
-                # 6. repeat 1-5 until process terminated 
-                
-                self.state = State.STOP
-
-        self.quit
+        self.quit()
 
 
     """
