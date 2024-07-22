@@ -46,19 +46,26 @@ class App:
         self.state = State.IDLE
 
         while self.state != State.STOP:
-            if self.state == State.IDLE:
+            state = self.state
+
+            if state == State.IDLE:
                 #prompt = term.prompt()
-                prompt = input()
+                #prompt = input()
+                #print(prompt)
+                #prompt = self.terminal.prompt()
+                a = input()
+                print(a)
 
                 """
                 if prompt:
-                    state = STATE.RUNNING
+                    self.state = State.RUNNING
                 else:
-                    state = STATE.IDLE
+                    self.state = State.IDLE
                 """
+                
                 self.state = State.RUNNING
               
-            elif self.state == State.RUNNING:
+            elif state == State.RUNNING:
                 # query model for actions and execute
                 # result = self.model.query(prompt)
                 #self.cmd.execute_instructions(result)
@@ -72,11 +79,11 @@ class App:
                 
                 self.state = State.STOP
 
-        self._quit
+        self.quit
 
 
     """
     Terminates all processes.
     """
-    def _quit(self) -> None:
+    def quit(self) -> None:
         self.model.quit()

@@ -1,5 +1,6 @@
 from typing import Self, List
 import sys
+import pyinputplus as pyip
 
 
 """
@@ -51,6 +52,6 @@ class Terminal:
     Waits for user input
     """
     def prompt(self) -> str:
-        prompt = input(text(f'Djinn ({self.project}) % ', [STYLE.BOLD]))
-
-        return prompt
+        name = input()
+        
+        return name

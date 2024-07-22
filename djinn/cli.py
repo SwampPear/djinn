@@ -19,16 +19,21 @@ class CLI:
     Initializes the argument parser for terminal command.
     """
     def _init_parser(self) -> ArgumentParser:
-        arg_parser = ArgumentParser(description='Djinn CLI')
+        parser = ArgumentParser(description='Djinn CLI')
 
-        arg_parser.add_argument('command', choices=['new', 'start', 'rm'])
-        arg_parser.add_argument('project')
-        arg_parser.add_argument(
-            '--workspace', '-w',
+        subparsers = parser.add_subparsers(dest='command')
+
+        new_parser = subparsers.add_parser('new', help='blame people')
+        new_parser.add_argument('project', help='name(s) to blame')
+        new_parser.add_argument(
+            '--workspace',
+            '-w',
+            required=False,
             default=os.getcwd(),
-            required=False)
-
-        return arg_parser
+            help='Print debug info'
+        )
+        
+        return parser
 
 
     """
