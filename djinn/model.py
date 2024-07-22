@@ -55,6 +55,7 @@ class Model:
             'Content-Type': 'application/json'
         }
 
+        log(text('Querying...\n', [STYLE.GREEN, STYLE.BOLD]))
         response = requests.post(url, headers=headers, json=data)
 
         return(response.json()['message']['content'])

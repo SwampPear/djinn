@@ -4,6 +4,7 @@ import shutil
 from argparse import ArgumentParser
 
 from .app import App
+from .terminal import log, text, STYLE
 from .utils import DJINN_DIR
 
 
@@ -39,7 +40,7 @@ class CLI:
         prompt_parser = subparsers.add_parser('prompt', 
             help='prompts a project')
         prompt_parser.add_argument('project', help='name of a project')
-        prompt_parser.add_argument('prompt', help='prompt')
+        prompt_parser.add_argument('prompt', nargs='*', help='prompt')
 
         return parser
 
@@ -55,7 +56,8 @@ class CLI:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project in dirs:
-            print('project name already taken')
+            log(text(f'{project} is already a project name\n', 
+                [STYLE.RED, STYLE.BOLD]))
         else:
             # init project dir
             os.mkdir(f'{DJINN_DIR}/projects/{project}')
@@ -73,6 +75,9 @@ class CLI:
 
                 json.dump(contents, file)
 
+            log(text(f'{project} successfully created\n', 
+                [STYLE.GREEN, STYLE.BOLD]))
+
 
     """
     Prompts a djinn app.
@@ -84,9 +89,9 @@ class CLI:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project not in dirs:
-            print('project not found')
+            log(text(f'{project} not found\n', 
+                [STYLE.RED, STYLE.BOLD]))
         else:
-            print("prompt here")
             app = App(project, prompt)
             app.run()
 
@@ -101,9 +106,13 @@ class CLI:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project not in dirs:
-            print('project not found')
+            log(text(f'{project} not found\n', 
+                [STYLE.RED, STYLE.BOLD]))
         else:
             shutil.rmtree(f'{DJINN_DIR}/projects/{project}')
+
+            log(text(f'{project} successfully removed\n', 
+                [STYLE.GREEN, STYLE.BOLD]))
         
     
     """
@@ -116,6 +125,6 @@ class CLI:
         if args.command == 'new':
             self._new(args.project, args.workspace)
         elif args.command == 'prompt':
-            self._prompt(args.project, args.prompt)
+            self._prompt(args.project, ' '.join(args.prompt))
         elif args.command == 'rm':
             self._rm(args.project)
