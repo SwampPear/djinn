@@ -23,8 +23,8 @@ class CLI:
 
         subparsers = parser.add_subparsers(dest='command')
 
-        new_parser = subparsers.add_parser('new', help='blame people')
-        new_parser.add_argument('project', help='name(s) to blame')
+        new_parser = subparsers.add_parser('new', help='creates new project')
+        new_parser.add_argument('project', help='name of a project')
         new_parser.add_argument(
             '--workspace',
             '-w',
@@ -32,7 +32,15 @@ class CLI:
             default=os.getcwd(),
             help='Print debug info'
         )
-        
+
+        rm_parser = subparsers.add_parser('rm', help='removes a project')
+        rm_parser.add_argument('project', help='name of a project')
+
+        prompt_parser = subparsers.add_parser('prompt', 
+            help='prompts a project')
+        prompt_parser.add_argument('project', help='name of a project')
+        prompt_parser.add_argument('prompt', help='prompt')
+
         return parser
 
 
@@ -67,19 +75,20 @@ class CLI:
 
 
     """
-    Starts up a djinn app.
+    Prompts a djinn app.
 
     Params:
         project - name of project
     """
-    def _start(self, project: str) -> None:
+    def _prompt(self, project: str, prompt: str) -> None:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project not in dirs:
             print('project not found')
         else:
-            app = App(project)
-            app.run()
+            print("prompt here")
+            #app = App(project)
+            #app.run()
 
 
     """
@@ -106,7 +115,7 @@ class CLI:
         # route commands
         if args.command == 'new':
             self._new(args.project, args.workspace)
-        elif args.command == 'start':
-            self._start(args.project)
+        elif args.command == 'prompt':
+            self._prompt(args.project, args.prompt)
         elif args.command == 'rm':
             self._rm(args.project)
