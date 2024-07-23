@@ -45,17 +45,11 @@ class App:
     Runns the Djinn app.
     """
     def run(self) -> None:
-        # query instructions and execute on them
+        # query model for instructions
         result = self.model.query(self.prompt)
-        print(result)
-        #self.cmd.execute_instructions(result)
-
-        # 1. begin with prompt
-        # 2. query model with (formatted) prompt
-        # 3. iterate over and execute actions, feed output back into model
-        # 4. evaluate effectiveness of actions AFTER ALL ACTIONS COMPLETED
-        # 5. repeat 2-4 until effectiveness sufficient
-        # 6. repeat 1-5 until process terminated 
+        
+        # execute instructions
+        self.cmd.execute_instructions(result)
 
         self.quit()
 
