@@ -1,15 +1,12 @@
-import os
-import re
 import json
-import argparse
-import subprocess
+import re
 from typing import List
-from .terminal import STYLE, text, log
+from .utils import *
 
 
-class Action:
+class Instruction:
     """
-    Action parsed from llm output.
+    Instruction parsed from llm output.
     """
     action: str
     description: str
@@ -17,58 +14,29 @@ class Action:
 
 class CMD:
     """
-    Controls program logic and handles all processes.
+    Controls terminal command interface.
     """
-    def __init__(self):
-        self.parser = self._init_parser()
-        self.cwd = os.getcwd()
-        self.tab_size = 4
+    def __init__(self, project: str) -> None:
+        self.project = project
+
+        self.workpace = self.init_workspace()
+        self.cwd = self.workpace
 
     """
-    Executes a given command.
-
-    Params:
-        cmd - the command to execute
-
-    Returns:
-        error if error present, otherwise output
+    Initializes the workspace
     """
-    def _cmd(self, cmd: str) -> str:
-        # execute command
-        process = subprocess.Popen(
-            cmd, 
-            shell=True, 
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE
-        )
+    def init_workspace(self) -> str:
+        settings_path = f'{DJINN_DIR}/projects/{self.project}/settings.json'
 
-        # communicate to pipe
-        out, err = process.communicate()
-
-        # digest output
-        out_msg = out.decode('utf-8')
-        err_msg = err.decode('utf-8')
-
-        if err_msg != '':
-            return err_msg
+        with open(settings_path, 'r') as file:
+            return json.load(file)['workspace']
         
-        return out_msg
 
-
-    """
-    Parses instructions from query results.
-
-    Params:
-        instructions - string detailing json formatted instructions
-
-    Returns:
-        list of parsed instructions
-    """
-    def _parse_instructions(self, instructions: str) -> List[Action]:
+    def parse_instructions(self, instructions: str) -> List[Instruction]:
         parsed = []
 
         # match specific json
-        pattern = r'[\{\[]\s*"action":\s*"[^"]+",\s*"description":\s*"[^"]+"\s*[\}\]]'
+        pattern = r'\{\s*"action":\s*"["a-zA-z0-9:\s_.\\(),=+\']*",\s*"description":\s*"["a-zA-z0-9:\s_.\\(),=\']*"\s*\}'
         matches = re.findall(pattern, instructions, re.DOTALL)
 
         # build list
@@ -76,190 +44,15 @@ class CMD:
             parsed.append(json.loads(match))
 
         return parsed
-            
+    
 
-    """
-    Executes the instructions from query results.
-
-    Params:
-        query_result - result of the query with encoded instructions
-    """
-    def execute_instructions(self, query_result: str) -> None:
-        # parse and execute instructions
-        parsed_instructions = self._parse_instructions(query_result)
+    def execute_instructions(self, instructions: str) -> None:
+        parsed_instructions = self.parse_instructions(instructions)
 
         for instruction in parsed_instructions:
-            self._execute_instruction(instruction['action'])
+            self.execute_instruction(instruction)
 
     
-    """
-    Executes an individual instruction
+    def execute_instruction(self, instruction: Instruction) -> None:
+        print(instruction)
 
-    Params:
-        instruction - instruction to execute
-    """
-    def _execute_instruction(self, instruction: str) -> None:
-        # parse and route args
-        args = self.parser.parse_args(instruction.split())
-
-        if args.command == 'cd':
-            self._cd(args)
-        elif args.command == 'chmod':
-            pass
-        elif args.command == 'touch':
-            self._touch(args)
-        elif args.command == 'mkdir':
-            self._mkdir(args)
-        elif args.command == 'echo':
-            self._echo(args)
-        elif args.command == 'write':
-            self._write(args)
-        else:
-            pass
-
-
-    """
-    Initializes an argument parser.
-
-    Returns:
-        the argument parser
-    """
-    def _init_parser(self) -> argparse.ArgumentParser:
-        parser = argparse.ArgumentParser(description='instructions')
-        subparsers = parser.add_subparsers(dest='command')
-
-        # mkdir
-        mkdir_parser = subparsers.add_parser('mkdir')
-        mkdir_parser.add_argument('path', type=str)
-
-        # touch
-        touch_parser = subparsers.add_parser('touch')
-        touch_parser.add_argument('path', type=str)
-
-        # cd
-        cd_parser = subparsers.add_parser('cd')
-        cd_parser.add_argument('path', type=str)
-
-        # echo
-        echo_parser = subparsers.add_parser('echo')
-        echo_parser.add_argument('options', nargs='*')
-        
-        # chmod
-        chmod_parser = subparsers.add_parser('chmod')
-        chmod_parser.add_argument('permissions', type=str)
-        chmod_parser.add_argument('path', type=str)
-
-        # write
-        write_parser = subparsers.add_parser('write')
-        write_parser.add_argument('start', type=int)
-        write_parser.add_argument('end', type=int)
-        write_parser.add_argument('path', type=str)
-        write_parser.add_argument('contents',  nargs='*')
-    
-        return parser
-    
-
-    """
-    Changes the cwd.
-    """
-    def _cd(self, args):
-        self.cwd = f'{self.cwd}/{args.path}'
-        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
-        log(text(f'{self.cwd}\n', []))
-
-    """
-    Changes the permissions of a file.
-    """
-    def _chmod(self):
-        # TODO: imeplement
-        pass
-
-
-    """
-    Creates a new file.
-    """
-    def _touch(self, args):
-        cmd = f'touch {self._path(args.path)}'
-
-        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
-        log(text(f'{cmd}\n', []))
-
-        self._cmd(cmd)
-
-
-    """
-    Creates a directory.
-    """
-    def _mkdir(self, args):
-        cmd = f'mkdir {self._path(args.path)}'
-
-        log(text(f'{cmd}\n', []))
-
-        self._cmd(cmd)
-
-    """
-    Lists file system objects.
-    """
-    def _ls(self, args):
-        # TODO: implement
-        cmd = f'mkdir {self._path(args.path)}'
-
-        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
-        log(text(f'{cmd}\n', []))
-
-        self._cmd(cmd)
-
-    
-    """
-    Writes to a file.
-    """
-    def _write(self, args):
-        # sanitize path
-        path = self._path(args.path)
-
-        # format contents
-        contents = ' '.join(args.contents)
-
-        # insert new contents into previous
-        prev_contents = ''
-
-        # logs
-        cmd = f'write {args.start} {args.end} {args.path} {contents}' 
-        
-        log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
-        log(text(f'{cmd}\n', []))
-
-        try:
-            with open(path, 'r') as file:
-                prev_contents = file.read()
-
-            temp_contents = prev_contents[:args.start] 
-            temp_contents += contents
-            temp_contents += prev_contents[args.end:]
-
-            prev_contents = temp_contents
-
-            # write contents
-            with open(path, 'w') as file:
-                file.write(prev_contents)
-        except FileNotFoundError:
-            log(text('[cmd] ', [STYLE.GREEN, STYLE.BOLD]))
-            log(text(f'{cmd}\n', []))
-
-
-    """
-    Reads from a file.
-    """
-    def _read(self, args):
-        path = self._path(args.path)
-
-        with open(path, 'r') as file:
-            return file.read()
-
-
-    """
-    Formats the correct path.
-    """
-    def _path(self, path: str) -> str:
-        # TODO: implement path sanitizing
-        return f'{""}/{path}'

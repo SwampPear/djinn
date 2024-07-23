@@ -33,9 +33,9 @@ class App:
     def __init__(self, project: str, prompt: str):
         self.project = project
         self.prompt = prompt
-        self.db = Database(f'{DJINN_DIR}/projects/{project}/data')
+        self.db = Database(f'{DJINN_DIR}/projects/{self.project}/data')
         self.model = Model()
-        self.cmd = CMD()
+        self.cmd = CMD(self.project)
         self.terminal = Terminal(self.project)
 
         self.state = State.STOP
@@ -45,17 +45,8 @@ class App:
     Runns the Djinn app.
     """
     def run(self) -> None:
-        # query model for instructions
-        result = self.model.query(self.prompt)
+        query_result = self.model.query(self.prompt)
+
+        print(query_result)
         
-        # execute instructions
-        self.cmd.execute_instructions(result)
-
-        self.quit()
-
-
-    """
-    Terminates all processes.
-    """
-    def quit(self) -> None:
-        self.model.quit()
+        self.cmd.execute_instructions(query_result)
