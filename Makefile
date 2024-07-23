@@ -21,5 +21,8 @@ install:
 	# copy prompts
 	cp -r ./prompts ${LIB_DIR}/prompts
 
+	# copy env
+	cp ./.env ${LIB_DIR}
+
 clean:
 	sudo rm -rf ${LIB_DIR}

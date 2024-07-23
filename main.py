@@ -1,7 +1,6 @@
-stop = False
+from djinn.model import Model
 
-while not stop:
-    prompt = input()
 
-    if prompt == 'asdf':
-        stop = True
+if __name__ == '__main__':
+    model = Model()
+    model.query('write me a program that adds two numbers in python')

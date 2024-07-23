@@ -2,6 +2,7 @@
 env/
 __pycache__/
 djinn-env/
+.env
 
 # database
 data/*
