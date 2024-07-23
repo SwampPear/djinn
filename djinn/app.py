@@ -45,12 +45,9 @@ class App:
     Runns the Djinn app.
     """
     def run(self) -> None:
+        # query instructions and execute on them
         result = self.model.query(self.prompt)
-
         print(result)
-
-        # query model for actions and execute
-        # result = self.model.query(prompt)
         #self.cmd.execute_instructions(result)
 
         # 1. begin with prompt

@@ -119,6 +119,6 @@ class Model:
         # TODO: clean up with options
         fmt_prompt = {}
         fmt_prompt['objective'] = prompt
-        fmt_prompt['context'] = read_file('prompts/basic_context.md')
+        fmt_prompt['context'] = read_file(f'{DJINN_DIR}/prompts/basic_context.md')
 
         return json.dumps(fmt_prompt)
