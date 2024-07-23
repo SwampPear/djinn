@@ -32,6 +32,9 @@ class CMD:
             return json.load(file)['workspace']
         
 
+    """
+    Parses json instructions from natural language.
+    """
     def parse_instructions(self, instructions: str) -> List[Instruction]:
         parsed = []
 
@@ -46,6 +49,9 @@ class CMD:
         return parsed
     
 
+    """
+    Executes parsed instructions.
+    """
     def execute_instructions(self, instructions: str) -> None:
         parsed_instructions = self.parse_instructions(instructions)
 
@@ -53,6 +59,29 @@ class CMD:
             self.execute_instruction(instruction)
 
     
+    """
+    Executes a parsed instruction.
+    """
     def execute_instruction(self, instruction: Instruction) -> None:
-        print(instruction)
+        action = instruction['action']
+        command = action.split(' ')[0]
+
+        if command == 'write':
+            self.write(action)
+        else:
+            self.execute_cmd(action)
+
+    
+    """
+    Writes some text to a file.
+    """
+    def write(self, action: str) -> None:
+        print(action)
+
+
+    """
+    Executes a terminal instruction.
+    """
+    def execute_cmd(self, action: str) -> None:
+        print(action)
 
