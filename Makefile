@@ -25,4 +25,8 @@ install:
 	cp ./.env ${LIB_DIR}
 
 clean:
-	sudo rm -rf ${LIB_DIR}
+	rm ./test/*
+
+try:
+	cd test && python3 ${LIB_DIR}djinn.py new t
+	cd test && python3 ${LIB_DIR}djinn.py prompt t write me a program that adds two numbers in python

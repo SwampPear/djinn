@@ -1,5 +1,6 @@
 import json
 import re
+import os
 from typing import List
 from .settings import *
 
@@ -39,7 +40,7 @@ class CMD:
         parsed = []
 
         # match specific json
-        pattern = r'\{\s*"action":\s*"["a-zA-z0-9:\s_.\\(),=+\'!#/]*",\s*"description":\s*"["a-zA-z0-9:\s_.\\(),=\'!#/]*"\s*\}'
+        pattern = '\{\s*"action":\s*"["a-zA-z0-9:\s_.\\(),=+\'!#/@*]*",\s*"description":\s*"["a-zA-z0-9:\s_.\\(),=\'!#/@*]*"\s*\}'
         matches = re.findall(pattern, instructions, re.DOTALL)
 
         # build list
@@ -56,43 +57,31 @@ class CMD:
         parsed_instructions = self.parse_instructions(instructions)
 
         for instruction in parsed_instructions:
-            self.execute_instruction(instruction)
 
-    
-    """
-    Executes a parsed instruction.
-    """
-    def execute_instruction(self, instruction: Instruction) -> None:
-        action = instruction['action']
-        command = action.split(' ')[0]
+            action = instruction['action']
+            command = action.split(' ')[0]
 
-        if command == 'write':
-            self.write(action)
-        else:
-            self.execute_cmd(action)
+            if command == 'write':
+                self._write(action)
+            else:
+                self._execute_cmd(action)
 
     
     """
     Writes some text to a file.
     """
-    def write(self, action: str) -> None:
-        file, content = self.parse_write_action(action)
-        print((file, content))
-
-    
-    """
-    Parses content from from a write action.
-    """
-    def parse_write_action(self, action: str) -> tuple:
+    def _write(self, action: str) -> None:
         file = action.split(' ')[1]
         content = ' '.join(action.split(' ')[2:])[1:-1]
+        content = content.replace('\\n', '\n')
 
-        return (file, content)
+        with open(file, 'w') as f:
+            print((file, content))
+            f.write(content)
 
 
     """
     Executes a terminal instruction.
     """
-    def execute_cmd(self, action: str) -> None:
-        print(action)
-
+    def _execute_cmd(self, action: str) -> None:
+        os.system(action)

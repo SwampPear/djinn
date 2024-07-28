@@ -124,7 +124,7 @@ class CLI:
             project = args.project
             prompt = ' '.join(args.prompt)
 
-            self._prompt(args.project, ' '.join(args.prompt))
+            self._prompt(project, prompt)
             
         elif args.command == 'rm':
             self._rm(args.project)
