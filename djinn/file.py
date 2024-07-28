@@ -84,8 +84,6 @@ class FileTree:
 
         return self._tree(contents, level, node)
 
-        return contents
-
     
     """
     Formats a tree representation of this file tree.

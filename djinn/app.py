@@ -1,4 +1,3 @@
-from .terminal import Terminal
 from .cmd import CMD
 from .db import Database
 from .model import Model

@@ -12,7 +12,7 @@ class Model:
         self.client = OpenAI()
 
     
-    def format_context(self) -> str:
+    def _format_context(self) -> str:
         ctx_path = f'{DJINN_DIR}/prompts/basic_context.md'
 
         with open(ctx_path, 'r') as f:
@@ -26,7 +26,7 @@ class Model:
         completion = self.client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
-                {"role": "system", "content": self.format_context()},
+                {"role": "system", "content": self._format_context()},
                 {"role": "user", "content": query}
             ])
         
