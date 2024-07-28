@@ -34,8 +34,8 @@ class App:
         self.project = project
         self.prompt = prompt
         self.db = Database(f'{DJINN_DIR}/projects/{self.project}/data')
-        self.model = Model()
         self.cmd = CMD(self.project)
+        self.model = Model(self.cmd.workspace)
         self.terminal = Terminal(self.project)
 
         self.state = State.STOP

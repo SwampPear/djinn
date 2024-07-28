@@ -4,6 +4,11 @@ should take the objective and list the necesary steps to execute the objective.
 You should also adhere to the guidelines provided here on which commands are
 acceptable or not.
 
+# Root Directory
+ALL PATHS should be a full path using the following root directory:
+
+ROOT DIRECTORY = <root_dir>
+
 # Commands
 Please use any unix command or general terminal commands but adhere to using the 
 provided custom commands whenever possible.

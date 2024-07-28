@@ -19,8 +19,8 @@ class CMD:
     def __init__(self, project: str) -> None:
         self.project = project
 
-        self.workpace = self.init_workspace()
-        self.cwd = self.workpace
+        self.workspace = self.init_workspace()
+        self.cwd = self.workspace
 
     """
     Initializes the workspace
@@ -39,7 +39,7 @@ class CMD:
         parsed = []
 
         # match specific json
-        pattern = r'\{\s*"action":\s*"["a-zA-z0-9:\s_.\\(),=+\']*",\s*"description":\s*"["a-zA-z0-9:\s_.\\(),=\']*"\s*\}'
+        pattern = r'\{\s*"action":\s*"["a-zA-z0-9:\s_.\\(),=+\'!#/]*",\s*"description":\s*"["a-zA-z0-9:\s_.\\(),=\'!#/]*"\s*\}'
         matches = re.findall(pattern, instructions, re.DOTALL)
 
         # build list
@@ -76,7 +76,18 @@ class CMD:
     Writes some text to a file.
     """
     def write(self, action: str) -> None:
-        print(action)
+        file, content = self.parse_write_action(action)
+        print((file, content))
+
+    
+    """
+    Parses content from from a write action.
+    """
+    def parse_write_action(self, action: str) -> tuple:
+        file = action.split(' ')[1]
+        content = ' '.join(action.split(' ')[2:])[1:-1]
+
+        return (file, content)
 
 
     """
