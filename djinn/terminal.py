@@ -5,26 +5,19 @@ import pyinputplus as pyip
 
 """
 Formats text with ASCII styling.
-
-Params:
-    txt - text to format
-    style - styles to apply
 """
-def text(txt: str, style: List[str] = []) -> str:
-    return f"{''.join(style)}{txt}{STYLE.END}"
+def fmt(txt: str, style: List[str] = []) -> str:
+    return f"{''.join(style)}{txt}{S.END}"
 
 
 """
-Writes some text to the terminal.
-
-Params:
-    txt - text to write
+Logs text to terminal.
 """
 def log(txt: str) -> None:
     sys.stdout.write(txt)
 
 
-class STYLE:
+class S:
     """
     ASCII terminal styles.
     """
@@ -39,9 +32,6 @@ class STYLE:
 class Terminal:
     """
     Handles terminal interaction.
-
-    Params:
-        project - name of the working project
     """
     def __init__(self, project: str) -> Self:
         self.project = project

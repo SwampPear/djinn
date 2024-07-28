@@ -2,15 +2,14 @@ import json
 import os
 import shutil
 from argparse import ArgumentParser
-
 from .app import App
-from .terminal import log, text, STYLE
-from .utils import DJINN_DIR
+from .terminal import log, fmt, S
+from .settings import DJINN_DIR
 
 
 class CLI:
     """
-    Handles startup command and shell interaction.
+    Handles Djinn command line interface.
     """
     def __init__(self):
         self.arg_parser = self._init_parser()
@@ -21,9 +20,9 @@ class CLI:
     """
     def _init_parser(self) -> ArgumentParser:
         parser = ArgumentParser(description='Djinn CLI')
-
         subparsers = parser.add_subparsers(dest='command')
 
+        # new
         new_parser = subparsers.add_parser('new', help='creates new project')
         new_parser.add_argument('project', help='name of a project')
         new_parser.add_argument(
@@ -34,9 +33,11 @@ class CLI:
             help='Print debug info'
         )
 
+        # rm
         rm_parser = subparsers.add_parser('rm', help='removes a project')
         rm_parser.add_argument('project', help='name of a project')
 
+        # prompt
         prompt_parser = subparsers.add_parser('prompt', 
             help='prompts a project')
         prompt_parser.add_argument('project', help='name of a project')
@@ -47,36 +48,32 @@ class CLI:
 
     """
     Creates a new Djinn project.
-
-    Params:
-        project - name of project
-        workspace - workspace directory
     """
     def _new(self, project: str, workspace: str) -> None:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project in dirs:
-            log(text(f'{project} is already a project name\n', 
-                [STYLE.RED, STYLE.BOLD]))
-        else:
-            # init project dir
-            os.mkdir(f'{DJINN_DIR}/projects/{project}')
+            log(fmt(
+                f'\'{project}\' is already a project name\n', [S.RED, S.BOLD]))
             
-            # init data
-            with open(f'{DJINN_DIR}/projects/{project}/data', 'w') as file:
+        else:
+            # init project data
+            project_path = f'{DJINN_DIR}/projects/{project}'
+
+            os.mkdir(project_path)
+            
+            with open(f'{project_path}/data', 'w') as file:
                 file.write('')
 
-            # init project settings
-            with open(f'{DJINN_DIR}/projects/{project}/settings.json', 'w') as file:
-                contents = {
+            with open(f'{project_path}/settings.json', 'w') as file:
+                settings = {
                     "project": project,
                     "workspace": workspace
                 }
 
-                json.dump(contents, file)
+                json.dump(settings, file)
 
-            log(text(f'{project} successfully created\n', 
-                [STYLE.GREEN, STYLE.BOLD]))
+            log(fmt(f'{project} successfully created\n', [S.GREEN, S.BOLD]))
 
 
     """
@@ -89,8 +86,8 @@ class CLI:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project not in dirs:
-            log(text(f'{project} not found\n', 
-                [STYLE.RED, STYLE.BOLD]))
+            log(fmt(f'\'{project}\' not found\n', [S.RED, S.BOLD]))
+
         else:
             app = App(project, prompt)
             app.run()
@@ -106,13 +103,12 @@ class CLI:
         dirs = os.listdir(f'{DJINN_DIR}/projects')
 
         if project not in dirs:
-            log(text(f'{project} not found\n', 
-                [STYLE.RED, STYLE.BOLD]))
+            log(fmt(f'\'{project}\' not found\n', [S.RED, S.BOLD]))
+
         else:
             shutil.rmtree(f'{DJINN_DIR}/projects/{project}')
 
-            log(text(f'{project} successfully removed\n', 
-                [STYLE.GREEN, STYLE.BOLD]))
+            log(fmt(f'{project} successfully removed\n', [S.GREEN, S.BOLD]))
         
     
     """
@@ -121,10 +117,14 @@ class CLI:
     def run(self) -> None:
         args = self.arg_parser.parse_args()
 
-        # route commands
         if args.command == 'new':
             self._new(args.project, args.workspace)
+
         elif args.command == 'prompt':
+            project = args.project
+            prompt = ' '.join(args.prompt)
+
             self._prompt(args.project, ' '.join(args.prompt))
+            
         elif args.command == 'rm':
             self._rm(args.project)

@@ -1,7 +1,7 @@
 import json
 import re
 from typing import List
-from .utils import *
+from .settings import *
 
 
 class Instruction:

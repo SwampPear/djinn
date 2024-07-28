@@ -1,8 +1,6 @@
-import os
-import json
 from dotenv import load_dotenv
 from openai import OpenAI
-from .utils import *
+from .settings import *
 
 
 load_dotenv()
@@ -15,10 +13,13 @@ class Model:
 
     
     def format_context(self) -> str:
-        context = read_file(f'{DJINN_DIR}/prompts/basic_context.md')
-        context = context.replace('<root_dir>', self.workspace)
+        ctx_path = f'{DJINN_DIR}/prompts/basic_context.md'
 
-        return context
+        with open(ctx_path, 'r') as f:
+            ctx = f.read()
+            ctx = ctx.replace('<root_dir>', self.workspace)
+
+            return ctx
 
 
     def query(self, query: str):

@@ -5,4 +5,4 @@ from .db import *
 from .file import *
 from .model import *
 from .terminal import *
-from .utils import *
+from .settings import *

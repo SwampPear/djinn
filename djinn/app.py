@@ -2,7 +2,7 @@ from .terminal import Terminal
 from .cmd import CMD
 from .db import Database
 from .model import Model
-from .utils import DJINN_DIR
+from .settings import DJINN_DIR
 
 
 class State:
@@ -36,7 +36,6 @@ class App:
         self.db = Database(f'{DJINN_DIR}/projects/{self.project}/data')
         self.cmd = CMD(self.project)
         self.model = Model(self.cmd.workspace)
-        self.terminal = Terminal(self.project)
 
         self.state = State.STOP
 
