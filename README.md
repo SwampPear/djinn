@@ -1,6 +1,6 @@
 # DJinn
 
-Djinn is a CLI tool for executing terminal functionality wit natural language.
+Djinn is a CLI tool for executing terminal functionality with natural language.
 
 ## Installation
 
