@@ -1,4 +1,15 @@
 # DJinn
 
-## Notes
-[action transformer](https://www.leewayhertz.com/action-transformer-model/#:~:text=Overall%2C%20intent%20recognition%20in%20an,continuously%20learning%20from%20new%20data.)
+Djinn is a CLI tool for executing terminal functionality with natural language.
+
+## Installation
+
+1. clone this repo
+2. ```make install```
+
+## Usage
+### Creating a Project
+```djinn new <project>```
+
+### Prompting
+```djinn prompt <project> <prompt>```
