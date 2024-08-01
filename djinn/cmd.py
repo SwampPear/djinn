@@ -40,12 +40,11 @@ class CMD:
         parsed = []
 
         # match specific json
-        pattern = '\{\s*"action":\s*"[a-zA-z0-9!@#$%^&*()\-_=+|\\\[\]{}:;\"\',.<>?/`~\s]*",\s*"description":\s*"[a-zA-z0-9!@#$%^&*()\-_=+|\\\[\]{}:;\"\',.<>?/`~\s]*"\s*\}'
-        matches = re.findall(pattern, instructions, re.DOTALL)
+        pattern = r'\[[a-zA-Z0-9!@#$%^&*()\-_=+|\\\[\]{}:;\"\',.<>?/`~\sé]+\]'
+        match = re.findall(pattern, instructions, re.DOTALL)[0]
 
-        # build list
-        for match in matches:
-            parsed.append(json.loads(match))
+        for instruction in json.loads(match):
+            parsed.append(instruction)
 
         return parsed
     
@@ -76,6 +75,7 @@ class CMD:
         file = action.split(' ')[1]
         content = ' '.join(action.split(' ')[2:])[1:-1]
         content = content.replace('\\n', '\n')
+        content = content.replace('\\\"', '"')
 
         with open(file, 'w') as f:
             print((file, content))
