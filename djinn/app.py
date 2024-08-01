@@ -44,5 +44,6 @@ class App:
     """
     def run(self) -> None:
         query_result = self.model.query(self.prompt)
+        print(query_result)
         
         self.cmd.execute_instructions(query_result)

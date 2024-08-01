@@ -40,7 +40,7 @@ class CMD:
         parsed = []
 
         # match specific json
-        pattern = '\{\s*"action":\s*"["a-zA-z0-9:\s_.\\(),=+\'!#/@*]*",\s*"description":\s*"["a-zA-z0-9:\s_.\\(),=\'!#/@*]*"\s*\}'
+        pattern = '\{\s*"action":\s*"[a-zA-z0-9!@#$%^&*()\-_=+|\\\[\]{}:;\"\',.<>?/`~\s]*",\s*"description":\s*"[a-zA-z0-9!@#$%^&*()\-_=+|\\\[\]{}:;\"\',.<>?/`~\s]*"\s*\}'
         matches = re.findall(pattern, instructions, re.DOTALL)
 
         # build list
@@ -60,6 +60,8 @@ class CMD:
 
             action = instruction['action']
             command = action.split(' ')[0]
+
+            print(action)
 
             if command == 'write':
                 self._write(action)
