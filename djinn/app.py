@@ -2,12 +2,10 @@ from .cmd import CMD
 from .db import Database
 from .model import Model
 from .settings import DJINN_DIR
+from typing import Enum
 
 
-class State:
-    """
-    App state.
-    """
+class State(Enum):
     IDLE = 0
     RUNNING = 1
     STOP = 2
@@ -45,5 +43,5 @@ class App:
     def run(self) -> None:
         query_result = self.model.query(self.prompt)
         print(query_result)
-        
+
         self.cmd.execute_instructions(query_result)
