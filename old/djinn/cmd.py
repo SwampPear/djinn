@@ -6,40 +6,21 @@ from .settings import *
 
 
 class Instruction:
-    """
-    Instruction parsed from llm output.
-    """
     action: str
     description: str
 
 
 class CMD:
-    """
-    Controls terminal command interface.
-    """
-    def __init__(self, project: str) -> None:
-        self.project = project
-
-        self.workspace = self.init_workspace()
+    def __init__(self, path: str, workspace: str) -> None:
+        self.path = path
+        self.workspace = workspace
         self.cwd = self.workspace
-
-    """
-    Initializes the workspace
-    """
-    def init_workspace(self) -> str:
-        settings_path = f'{DJINN_DIR}/projects/{self.project}/settings.json'
-
-        with open(settings_path, 'r') as file:
-            return json.load(file)['workspace']
         
 
-    """
-    Parses json instructions from natural language.
-    """
     def parse_instructions(self, instructions: str) -> List[Instruction]:
         parsed = []
 
-        # match specific json
+        # match json
         pattern = r'\[[a-zA-Z0-9!@#$%^&*()\-_=+|\\\[\]{}:;\"\',.<>?/`~\sé]+\]'
         match = re.findall(pattern, instructions, re.DOTALL)[0]
 
@@ -49,9 +30,6 @@ class CMD:
         return parsed
     
 
-    """
-    Executes parsed instructions.
-    """
     def execute_instructions(self, instructions: str) -> None:
         parsed_instructions = self.parse_instructions(instructions)
 

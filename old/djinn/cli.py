@@ -8,16 +8,10 @@ from .settings import DJINN_DIR
 
 
 class CLI:
-    """
-    Handles Djinn command line interface.
-    """
     def __init__(self):
         self.arg_parser = self._init_parser()
 
 
-    """
-    Initializes the argument parser for terminal command.
-    """
     def _init_parser(self) -> ArgumentParser:
         parser = ArgumentParser(description='Djinn CLI')
         subparsers = parser.add_subparsers(dest='command')

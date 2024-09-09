@@ -17,10 +17,10 @@ class Database:
     """
     Database interface.
     """
-    def __init__(self, db_path: str) -> None:
-        self.db_path = db_path
+    def __init__(self, path: str) -> None:
+        self.path = path
 
-        self.conn = sqlite3.connect(self.db_path)
+        self.conn = sqlite3.connect(f'{self.path}/settings.json')
 
 
     """

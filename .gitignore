@@ -9,5 +9,8 @@ data/*
 
 # interface
 migrations/
-
 test/
+
+# rust
+target/
+Cargo.lock
