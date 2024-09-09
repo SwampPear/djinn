@@ -30,7 +30,3 @@ clean:
 try:
 	cd test && python3 ${LIB_DIR}djinn.py new t
 	cd test && python3 ${LIB_DIR}djinn.py prompt t write me a program that adds two numbers in python
-
-run:
-	cargo build
-	cargo run
