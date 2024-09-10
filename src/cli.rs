@@ -1,18 +1,18 @@
-use clap::{command, Command, Arg};
 use std::env;
 use std::path::PathBuf;
+use clap::{command, Command, Arg};
 
-enum CLICommand {
+pub enum CLICommand {
     NEW,
     RM,
     PROMPT
 }
 
-struct CLIArgs {
-    command: CLICommand,
-    project: String,
-    workspace: PathBuf,
-    prompt: String
+pub struct CLIArgs {
+    pub command: CLICommand,
+    pub project: String,
+    pub workspace: PathBuf,
+    pub prompt: String
 }
 
 impl CLIArgs {
@@ -33,7 +33,7 @@ fn cwd() -> PathBuf {
     }
 }
 
-pub fn parse_args() {
+pub fn parse_args() -> CLIArgs {
     let mut cli_args = CLIArgs::new();
 
     // command buildup
@@ -111,4 +111,6 @@ pub fn parse_args() {
             cli_args.prompt = prompt.to_string();
         }
     }
+
+    return cli_args
 }

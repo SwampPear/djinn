@@ -1,5 +1,6 @@
 mod cli;
+mod app;
 
 fn main() {
-    cli::parse_args();
+    app::run(cli::parse_args());
 }
