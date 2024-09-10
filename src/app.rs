@@ -5,6 +5,10 @@ fn new(args: cli::CLIArgs) {
     println!("project: {}", args.project);
     println!("workspace: {}", args.workspace.display());
     println!("prompt: {}", args.prompt);
+
+    // check through projects and make sure project name does not exist
+    // create data database
+    // create settings.json with workspace
 }
 
 fn rm(args: cli::CLIArgs) {
