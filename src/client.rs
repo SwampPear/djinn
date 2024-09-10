@@ -1,27 +1,40 @@
-use json;
 use reqwest;
+use dotenv;
+use serde_json::json;
+use std::error::Error;
 
-/*
-let parsed = json::parse(r#"
 
-{
-    "code": 200,
-    "success": true,
-    "payload": {
-        "features": [
-            "awesome",
-            "easyAPI",
-            "lowLearningCurve"
+pub fn query() -> Result<(), Box<dyn Error>> {
+    dotenv::dotenv().ok();
+    let api_key = std::env::var("OPENAI_API_KEY")
+        .expect("OPENAI_API_KEY must be set.");
+
+    let url = "https://api.openai.com/v1/chat/completions";
+
+    let body = json!({
+        "model": "gpt-4o-mini",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a helpful assistant."
+            },
+            {
+                "role": "user",
+                "content": "Write a haiku that explains the concept of recursion."
+            }
         ]
-    }
-}
+    });
 
-"#).unwrap();
-*/
+    let client = reqwest::blocking::Client::new();
+    let resp = client
+        .post(url)
+        .header("Content-Type", "application/json")
+        .header("Authorization", format!("Bearer {}", api_key))
+        .json(&body) // Send the JSON body
+        .send()?;
 
-pub fn query() {
-    let body = reqwest::blocking::get("https://www.rust-lang.org")?
-        .text()?;
+    let resp_text = resp.text()?;
+    println!("{:#?}", resp_text);
 
-    println!("body = {body:?}");
+    Ok(())
 }
