@@ -1,16 +1,4 @@
-# python
-env/
-__pycache__/
-djinn-env/
 .env
-
-# database
-data/*
-
-# interface
-migrations/
-test/
-
-# rust
 target/
 Cargo.lock
+install/

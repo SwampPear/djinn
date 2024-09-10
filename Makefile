@@ -1,5 +1,8 @@
 LIB_DIR = $${HOME}/Library/Application\ Support/Djinn/
 
+bootstrap:
+	cp ./target/release/djinn ./install
+
 install:
 	# remove outdated
 	rm -rf ${LIB_DIR}						# clear old lib
