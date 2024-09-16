@@ -4,7 +4,7 @@ use serde_json::json;
 use std::error::Error;
 
 
-pub fn query() -> Result<(), Box<dyn Error>> {
+pub fn query(prompt: String) -> Result<(), Box<dyn Error>> {
     dotenv::dotenv().ok();
     let api_key = std::env::var("OPENAI_API_KEY")
         .expect("OPENAI_API_KEY must be set.");
@@ -20,7 +20,7 @@ pub fn query() -> Result<(), Box<dyn Error>> {
             },
             {
                 "role": "user",
-                "content": "Write a haiku that explains the concept of recursion."
+                "content": prompt
             }
         ]
     });
