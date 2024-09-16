@@ -3,7 +3,13 @@ use dotenv;
 use serde_json::json;
 use std::error::Error;
 use std::path::PathBuf;
+use std::fs;
+use std::io;
 
+
+fn read_file(path: PathBuf) -> Result<String, io::Error> {
+    fs::read_to_string(path)
+}
 
 pub fn fmt_context() -> () {
     dotenv::dotenv().ok();
@@ -18,7 +24,14 @@ pub fn fmt_context() -> () {
         "basic_context.md".to_string()
     ].iter().collect();
 
-    println!("{}", path.display());
+    match read_file(path) {
+        Ok(content) => {
+            println!("File content:\n{}", content);
+        }
+        Err(e) => {
+            println!("Error reading file: {}", e);
+        }
+    }
 }
 
 pub fn query(prompt: String) -> Result<(), Box<dyn Error>> {
