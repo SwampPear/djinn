@@ -2,7 +2,24 @@ use reqwest;
 use dotenv;
 use serde_json::json;
 use std::error::Error;
+use std::path::PathBuf;
 
+
+pub fn fmt_context() -> () {
+    dotenv::dotenv().ok();
+
+    let root = std::env::var("DJINN_ROOT")
+        .expect("DJINN_ROOT must be set.");
+
+    // basic context path
+    let path: PathBuf = [
+        root, 
+        "prompts".to_string(),
+        "basic_context.md".to_string()
+    ].iter().collect();
+
+    println!("{}", path.display());
+}
 
 pub fn query(prompt: String) -> Result<(), Box<dyn Error>> {
     dotenv::dotenv().ok();

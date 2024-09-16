@@ -5,7 +5,7 @@ mod client;
 use dotenv::dotenv;
 
 fn main() {
-    dotenv().ok();
-
-    app::run();
+    //dotenv().ok();
+    //app::run();
+    client::fmt_context();
 }
