@@ -2,10 +2,11 @@ mod cli;
 mod app;
 mod client;
 
-use dotenv::dotenv;
+use dotenv;
 
 fn main() {
-    //dotenv().ok();
+    dotenv::dotenv().ok();      
+
     //app::run();
     client::fmt_context();
 }

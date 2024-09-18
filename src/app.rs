@@ -1,31 +1,35 @@
-use crate::cli;
-use crate::client;
+use crate::{cli, client};
 
 fn new(args: cli::CLIArgs) {
-    println!("{}", "new");
-    println!("project: {}", args.project);
-    println!("workspace: {}", args.workspace.display());
-    println!("prompt: {}", args.prompt);
+    println!("new");
+    println!("Project: {}", args.project);
+    println!("Workspace: {}", args.workspace.display());
+    println!("Prompt: {}", args.prompt);
 
-    // check through projects and make sure project name does not exist
-    // create data database
-    // create settings.json with workspace
+    // TODO: check if the project name already exists.
+    // TODO: create data database.
+    // TODO: create settings.json with workspace details.
 }
 
 fn rm(args: cli::CLIArgs) {
-    println!("{}", "rm");
-    println!("project: {}", args.project);
-    println!("workspace: {}", args.workspace.display());
-    println!("prompt: {}", args.prompt);
-    // check through projects and make sure project name exists
+    println!("rm");
+    println!("Project: {}", args.project);
+    println!("Workspace: {}", args.workspace.display());
+    println!("Prompt: {}", args.prompt);
+
+    // TODO: check if the project name exists before removal.
 }
 
 fn prompt(args: cli::CLIArgs) {
-    println!("{}", "rm");
-    println!("project: {}", args.project);
-    println!("workspace: {}", args.workspace.display());
-    println!("prompt: {}", args.prompt);
-    client::query(args.prompt);
+    println!("prompt");
+    println!("Project: {}", args.project);
+    println!("Workspace: {}", args.workspace.display());
+    println!("Prompt: {}", args.prompt);
+
+    // query with prompt
+    if let Err(e) = client::query(&args.prompt) {
+        eprintln!("Error querying prompt: {}", e);
+    }
 }
 
 pub fn run() {
@@ -34,7 +38,6 @@ pub fn run() {
     match args.command {
         cli::CLICommand::NEW => new(args),
         cli::CLICommand::RM => rm(args),
-        cli::CLICommand::PROMPT => prompt(args)
+        cli::CLICommand::PROMPT => prompt(args),
     }
 }
-

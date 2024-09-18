@@ -2,6 +2,9 @@
 
 ROOT="$HOME/Library/Application Support/Djinn"
 
+unset DJINN_ROOT
+unset OPENAI_API_KEY
+
 cargo build --release
 cp "./target/release/djinn" "./install"
 
