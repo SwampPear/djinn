@@ -6,17 +6,19 @@ use std::path::PathBuf;
 use std::fs;
 use std::io;
 
+use crate::cli::CLIArgs;
+
 fn read_file(path: &PathBuf) -> Result<String, io::Error> {
     fs::read_to_string(path)
 }
 
-pub fn fmt_context() {
+pub fn fmt_context(args: &CLIArgs) -> String {
     let root = std::env::var("DJINN_ROOT")
         .expect("DJINN_ROOT environment variable must be set.");
-    
-    println!("{}", root);
 
-    // path to basic context
+    println!("{}", root.clone());
+
+    // basic context
     let path: PathBuf = [
         root,
         "prompts".into(),
@@ -25,19 +27,17 @@ pub fn fmt_context() {
     .iter()
     .collect();
 
-    println!("{}", path.display());
-
     match read_file(&path) {
         Ok(content) => {
-            println!("File content:\n{}", content);
+            return content
         }
         Err(e) => {
-            eprintln!("Error reading file: {}", e);
+            panic!("Error reading file: {}", e);
         }
     }
 }
 
-pub fn query(prompt: &str) -> Result<(), Box<dyn Error>> {
+pub fn query(args: &CLIArgs) -> Result<(), Box<dyn Error>> {
     let api_key = std::env::var("OPENAI_API_KEY")
         .expect("OPENAI_API_KEY environment variable must be set.");
 
@@ -48,11 +48,11 @@ pub fn query(prompt: &str) -> Result<(), Box<dyn Error>> {
         "messages": [
             {
                 "role": "system",
-                "content": "You are a helpful assistant."
+                "content": fmt_context(args)
             },
             {
                 "role": "user",
-                "content": prompt
+                "content": args.prompt
             }
         ]
     });

@@ -7,6 +7,5 @@ use dotenv;
 fn main() {
     dotenv::dotenv().ok();      
 
-    //app::run();
-    client::fmt_context();
+    app::run();
 }

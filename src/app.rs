@@ -27,7 +27,7 @@ fn prompt(args: cli::CLIArgs) {
     println!("Prompt: {}", args.prompt);
 
     // query with prompt
-    if let Err(e) = client::query(&args.prompt) {
+    if let Err(e) = client::query(&args) {
         eprintln!("Error querying prompt: {}", e);
     }
 }
