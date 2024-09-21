@@ -1,12 +1,51 @@
 use reqwest;
 
 use serde_json::json;
+use serde_json;
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::path::PathBuf;
 use std::fs;
 use std::io;
 
 use crate::cli::CLIArgs;
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Message {
+    role: String,
+    content: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Choice {
+    index: u8,
+    message: Message,
+    refusal: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct CompletionTokensDetails {
+    reasoning_tokens: u8,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Usage {
+    prompt_tokens: u32,
+    completion_tokens: u32,
+    total_tokens: u32,
+    completion_tokens_details: CompletionTokensDetails,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+struct Completion {
+    id: String,
+    object: String,
+    created: u64,
+    model: String,
+    choices: Vec<Choice>,
+    usage: Usage,
+    system_fingerprint: String,
+}
 
 fn read_file(path: &PathBuf) -> Result<String, io::Error> {
     fs::read_to_string(path)
@@ -29,7 +68,7 @@ pub fn fmt_context(args: &CLIArgs) -> String {
 
     match read_file(&path) {
         Ok(content) => {
-            return content
+            return content.replace("<root_dir>", &args.workspace.display().to_string())
         }
         Err(e) => {
             panic!("Error reading file: {}", e);
@@ -65,8 +104,8 @@ pub fn query(args: &CLIArgs) -> Result<(), Box<dyn Error>> {
         .json(&body)
         .send()?;
 
-    let response_text = response.text()?;
-    println!("{:#?}", response_text);
+    let completion: Completion = serde_json::from_str(&response.text()?)?;
+    let query_response = completion.choices[0].message.content;
 
     Ok(())
 }
