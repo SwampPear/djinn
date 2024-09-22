@@ -1,20 +1,31 @@
 use std::path::PathBuf;
 use std::fs;
+use serde_json::json;
+use serde_json;
+use serde::{Deserialize, Serialize};
 use crate::{cli, client};
 
-fn new(args: cli::CLIArgs) {
-    println!("new");
-    println!("Project: {}", args.project);
-    println!("Workspace: {}", args.workspace.display());
-    println!("Prompt: {}", args.prompt);
+#[derive(Serialize, Deserialize, Debug)]
+struct Settings {
+    workspace: PathBuf
+}
 
+impl Settings {
+    pub fn new(workspace: PathBuf) -> Self {
+        Settings {
+            workspace: workspace
+        }
+    }
+}
+
+fn new(args: cli::CLIArgs) {
     let root = std::env::var("DJINN_ROOT")
         .expect("DJINN_ROOT environment variable must be set.");
 
     let path: PathBuf = [
-        root,
+        root.clone(),
         "projects".into(),
-        args.project
+        args.project.clone()
     ]
     .iter()
     .collect();
@@ -22,20 +33,38 @@ fn new(args: cli::CLIArgs) {
     if path.exists() {
         println!("{}", "Project already exists");
     } else {
+        // create project directory
         fs::create_dir(path);
 
-        /*
-        with open(f'{project_path}/data', 'w') as file:
-            file.write('')
+        // create data file
+        let data_path: PathBuf = [
+            root.clone(),
+            "projects".into(),
+            args.project.clone(),
+            "data".into()
+        ]
+        .iter()
+        .collect();
 
-        with open(f'{project_path}/settings.json', 'w') as file:
-            settings = {
-                "project": project,
-                "workspace": workspace
-            }
+        fs::write(data_path, "");
 
-            json.dump(settings, file)
-        */
+        // create settings
+        let settings_path: PathBuf = [
+            root.clone(),
+            "projects".into(),
+            args.project.clone(),
+            "settings.json".into()
+        ]
+        .iter()
+        .collect();
+
+        let settings = Settings::new(args.workspace);
+
+        let j = serde_json::to_string(&settings).unwrap();
+
+        fs::write(settings_path, j);
+
+        println!("Project created successfully.")
     }
 }
 
