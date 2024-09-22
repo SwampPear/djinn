@@ -1,4 +1,6 @@
-<img src="/.github/djinn.svg" style="width: 50%">
+<p align="center">
+  <img src="/.github/djinn.svg" style="width: 50%">
+</p>
 
 Djinn is a CLI tool for executing terminal functionality with natural language.
 
