@@ -7,6 +7,7 @@ use std::error::Error;
 use std::path::PathBuf;
 use std::fs;
 use std::io;
+use regex::Regex;
 
 use crate::cli::CLIArgs;
 
@@ -47,6 +48,12 @@ struct Completion {
     system_fingerprint: String,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+struct Instruction {
+    action: String,
+    description: String,
+}
+
 fn read_file(path: &PathBuf) -> Result<String, io::Error> {
     fs::read_to_string(path)
 }
@@ -77,6 +84,7 @@ pub fn fmt_context(args: &CLIArgs) -> String {
 }
 
 pub fn query(args: &CLIArgs) -> Result<(), Box<dyn Error>> {
+    // build request
     let api_key = std::env::var("OPENAI_API_KEY")
         .expect("OPENAI_API_KEY environment variable must be set.");
 
@@ -96,6 +104,7 @@ pub fn query(args: &CLIArgs) -> Result<(), Box<dyn Error>> {
         ]
     });
 
+    // recieve response
     let client = reqwest::blocking::Client::new();
     let response = client
         .post(url)
@@ -105,7 +114,21 @@ pub fn query(args: &CLIArgs) -> Result<(), Box<dyn Error>> {
         .send()?;
 
     let completion: Completion = serde_json::from_str(&response.text()?)?;
-    let query_response = completion.choices[0].message.content;
+    let query_response = &completion.choices[0].message.content;
+
+    // parse response
+    let re = Regex::new(r#"\[[a-zA-Z0-9`~!@#$%^&*()_\-+={}\[\]|:;\"\'<,>.?/\s\\]*\]"#).unwrap();
+
+    if let Some(matched) = re.find(query_response) {
+        let instructions: Vec<Instruction> = serde_json::from_str(&matched.as_str())?;
+
+        for instruction in instructions.iter() {
+            println!("First match: {}", instruction.action);
+            println!("First match: {}", instruction.description);
+        }
+    } else {
+        panic!("Command parsing error.")
+    }
 
     Ok(())
 }

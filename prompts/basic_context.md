@@ -26,7 +26,7 @@ the steps should be listed in the folllowing format:
 
 [
     {
-        "action": "<command> <args>...,
+        "action": "<command> <args>...",
         "description": "description of the command"
     },
     ...
