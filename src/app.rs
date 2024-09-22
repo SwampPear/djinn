@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+use std::fs;
 use crate::{cli, client};
 
 fn new(args: cli::CLIArgs) {
@@ -6,18 +8,54 @@ fn new(args: cli::CLIArgs) {
     println!("Workspace: {}", args.workspace.display());
     println!("Prompt: {}", args.prompt);
 
-    // TODO: check if the project name already exists.
-    // TODO: create data database.
-    // TODO: create settings.json with workspace details.
+    let root = std::env::var("DJINN_ROOT")
+        .expect("DJINN_ROOT environment variable must be set.");
+
+    let path: PathBuf = [
+        root,
+        "projects".into(),
+        args.project
+    ]
+    .iter()
+    .collect();
+
+    if path.exists() {
+        println!("{}", "Project already exists");
+    } else {
+        fs::create_dir(path);
+
+        /*
+        with open(f'{project_path}/data', 'w') as file:
+            file.write('')
+
+        with open(f'{project_path}/settings.json', 'w') as file:
+            settings = {
+                "project": project,
+                "workspace": workspace
+            }
+
+            json.dump(settings, file)
+        */
+    }
 }
 
 fn rm(args: cli::CLIArgs) {
-    println!("rm");
-    println!("Project: {}", args.project);
-    println!("Workspace: {}", args.workspace.display());
-    println!("Prompt: {}", args.prompt);
+    let root = std::env::var("DJINN_ROOT")
+        .expect("DJINN_ROOT environment variable must be set.");
 
-    // TODO: check if the project name exists before removal.
+    let path: PathBuf = [
+        root,
+        "projects".into(),
+        args.project
+    ]
+    .iter()
+    .collect();
+
+    if path.exists() {
+        fs::remove_dir(path);
+    } else {
+        println!("{}", "Project does not exist.");
+    }
 }
 
 fn prompt(args: cli::CLIArgs) {
