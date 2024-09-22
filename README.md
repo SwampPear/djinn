@@ -2,6 +2,8 @@
   <img src="/.github/djinn.svg" style="width: 50%">
 </p>
 
+<hr>
+
 Djinn is a CLI tool for code generation from natural language.
 
 ## Installation
