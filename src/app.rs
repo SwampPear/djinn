@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 use std::fs;
+use std::fs::File;
+use std::io::BufReader;
 use serde_json::json;
 use serde_json;
 use serde::{Deserialize, Serialize};
@@ -85,15 +87,23 @@ fn rm(args: cli::CLIArgs) {
     }
 }
 
-fn prompt(args: cli::CLIArgs) {
-    println!("prompt");
-    println!("Project: {}", args.project);
-    println!("Workspace: {}", args.workspace.display());
-    println!("Prompt: {}", args.prompt);
+fn prompt(mut args: cli::CLIArgs) {
+    // settings path
+    let path: PathBuf = get_project_subpath(&args.project, "settings.json");
 
-    // query with prompt
-    if let Err(e) = client::query(&args) {
-        eprintln!("Error querying prompt: {}", e);
+    if path.exists() {
+        // read and deserialize json settings
+        let file = File::open(path).unwrap();
+        let reader = BufReader::new(file);
+        let data: Settings = serde_json::from_reader(reader).unwrap();
+
+        args.workspace = PathBuf::from(data.workspace);
+
+        if let Err(e) = client::query(&args) {
+            eprintln!("Error querying prompt: {}", e);
+        }
+    } else {
+        println!("Project does not exist.")
     }
 }
 
