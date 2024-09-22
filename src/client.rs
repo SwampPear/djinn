@@ -7,6 +7,7 @@ use std::error::Error;
 use std::path::PathBuf;
 use std::fs;
 use std::io;
+use std::process::Command;
 use regex::Regex;
 
 use crate::cli::CLIArgs;
@@ -123,11 +124,33 @@ pub fn query(args: &CLIArgs) -> Result<(), Box<dyn Error>> {
         let instructions: Vec<Instruction> = serde_json::from_str(&matched.as_str())?;
 
         for instruction in instructions.iter() {
-            println!("First match: {}", instruction.action);
-            println!("First match: {}", instruction.description);
+            let instruction_split: Vec<&str> = instruction.action.split(" ").collect();
+            let instruction_type = instruction_split[0];
+
+            println!("{}", instruction.action);
+
+            if instruction_type == "write" {
+                // parse path and contents
+                let path = instruction_split[1];
+                let mut contents = String::from(&instruction_split[2..]
+                    .join(" "));
+
+                contents = (&contents[1..contents.len() - 1])
+                    .to_string()
+                    .replace("\\n", "\n");
+                
+                // write to file
+                fs::write(path, contents).expect("Unable to write file");
+            } else {
+                // execute system process command
+                let output = Command::new(instruction_split[0])
+                    .args(&instruction_split[1..])
+                    .output()
+                    .expect("Failed to execute command");
+            }
         }
     } else {
-        panic!("Command parsing error.")
+        println!("Command parsing error.")
     }
 
     Ok(())

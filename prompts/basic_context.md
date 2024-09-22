@@ -37,4 +37,4 @@ If a path is recognized ANYWHERE IN A COMMAND it should be prepended with the
 following root directory: <root_dir>
 
 # White Space
-Please do not escape any tabs or newlines when writing to a file
+Please do not escape any tabs or newlines when writing to a file.
