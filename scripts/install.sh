@@ -13,4 +13,4 @@ cp "./install/settings.json" "$ROOT/user/settings.json"
 mkdir "$ROOT/projects"
 
 cp -r "./prompts" "$ROOT/prompts"
-cp "./.env" "$ROOT"
+#cp "./.env" "$ROOT"
