@@ -1,7 +1,4 @@
-
-
-
-def enumerate_tasks(config):
+def enumerate_tasks_prompt(config):
     root        = config['root']
     role        = config['role']
     project     = config['project']
@@ -11,7 +8,8 @@ def enumerate_tasks(config):
     {
         'tasks': [
             {
-                'action...',
+                'description': <task description>
+                'action': <terminal command>,
             }
         ],
     }
@@ -33,7 +31,7 @@ def enumerate_tasks(config):
 
     {format}
 
-    The action given in the ouput should be runnable on the environment.
+    The action SHOULD ONLY be a command that can be run in the terminal without error.
     '''
 
     return prompt

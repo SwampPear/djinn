@@ -1,18 +1,25 @@
+import os
 import sys
-from djinn.utils import read_json
-from djinn.prompt import enumerate_tasks
+from djinn.djinn import Djinn
 
+"""
+import openai
+from dotenv import load_dotenv
+
+load_dotenv()
+
+openai.api_key = os.getenv
+"""
 
 def main():
     try:
+        # parse
         args = sys.argv[1:]
+        fp = args[0]
 
-        config = read_json(args[0])
+        dj = Djinn(fp)
+        dj()
 
-        a = enumerate_tasks(config)
-
-
-        print(a)
     except IndexError:
         print("No arguments provided.")
 
