@@ -1,3 +1,7 @@
 {
-    "role": "asdf"
+    "root": "test/",
+    "role": "Senior Software Engineer",
+    "project": "Render a bell curve in matplotlib.",
+    "stack": "matplotlib",
+    "environment": "Apple Silicon"
 }
