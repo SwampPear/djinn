@@ -1,37 +1,46 @@
-def enumerate_tasks_prompt(config):
+def enumerate_tasks(config):
     root        = config['root']
     role        = config['role']
     project     = config['project']
     stack       = config['stack']
-    environment = config['stack']
-    format = '''
-    {
-        'tasks': [
-            {
-                'description': <task description>
-                'action': <terminal command>,
-            }
-        ],
-    }
+    environment = config['environment']
+
+    out_format = '''
+    [
+        {
+            "description": "<task description>",
+            "type": "<input|output>",
+            "action": "<terminal command>",
+            "file": "<file to be read if input>"
+        },
+        ...
+    ]
     '''
 
     prompt = f'''
-    Your role is a {role}. Please enumerate the tasks required to implement the following project based on the description provided. 
-    The tasks should be detailed and ordered in a logical sequence, considering dependencies and priorities. 
-    The project description is as follows: 
-    "{project}"
+    You are Djinn, a highly capable software engineer AI assistant.
 
-    The root directory for all paths used in this project should be: {root}
+    Your role is to analyze and decompose a project specification into a clear and logical list of terminal-executable tasks. You must reason about the dependencies, logical sequence, and correct ordering of tasks needed to complete the project efficiently.
 
-    The reccomended stack: {stack}
+    Each task should be represented as a JSON object with the following fields:
+    - "description": A concise explanation of what the task accomplishes.
+    - "type": Either "input" (if the task involves reading or inspecting a file/resource), "output" (if it generates, modifies, or produces something)
+    - "action": A shell command that can be executed directly in the terminal. Ensure that it is syntactically correct and contextually appropriate for the given system.
 
-    The computer environment: {environment}
+    ⚠️ When writing to a file, you must **only use `echo`. Use `echo` for multi-line strings where necessary. Do not use editors (e.g., `nano`, `vim`), `cat`, heredocs (`<<EOF`), or scripting languages. Commands should remain concise and terminal-friendly.
 
-    The output format from this prompt should AT ALL TIMES be json serializable and follow the following format:
+    Project-specific configuration:
+    - **Root Directory**: All relative paths should be rooted at `{root}`.
+    - **Role**: You are acting as a `{role}`.
+    - **Project Description**: "{project}"
+    - **Tech Stack**: {stack}
+    - **Environment**: {environment}
 
-    {format}
+    Your response MUST be valid JSON in the following format (ensure it is parsable):
 
-    The action SHOULD ONLY be a command that can be run in the terminal without error.
+    {out_format}
+
+    Only include tasks that can be executed via shell commands. Omit theoretical steps, commentary, or confirmation/testing steps. Your output should be pragmatic, actionable, and immediately usable for automation.
     '''
 
     return prompt

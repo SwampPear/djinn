@@ -1,30 +1,17 @@
-import os
-import sys
+import logging
 from djinn.djinn import Djinn
+from djinn.utils import logn
 
-"""
-import openai
-from dotenv import load_dotenv
-
-load_dotenv()
-
-openai.api_key = os.getenv
-"""
 
 def main():
+    logging.basicConfig(level=logging.INFO)
+    
     try:
-        # parse
-        args = sys.argv[1:]
-        fp = args[0]
-
-        dj = Djinn(fp)
-        dj()
-
-    except IndexError:
-        print("No arguments provided.")
+        dj = Djinn()
+        dj.run()
 
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logn(f"An error occurred: {e}")
 
 
 if __name__ == '__main__':

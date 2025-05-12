@@ -23,6 +23,10 @@ files and directories. Hopefully in the future more diverse data can be gathered
 and abstracted, such as screen and device data.
 
 ## Test Implementation Planning
-An implementation plan will then be extracted from the knowledge graph by
-tracing the dependency path on which the task will be executed. This is then
-unrolled into a priority queue of tasks.
+Uses the original priority queue to learn dependencies first, and then implement
+a testing suite
+
+
+
+
+# Tree oriented AI towards decision tree for task
