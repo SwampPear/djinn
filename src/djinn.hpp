@@ -2,3 +2,4 @@
 
 #include "djinn/core/core.hpp"
 #include "djinn/core/utils.hpp"
+#include "djinn/core/prompt.hpp"

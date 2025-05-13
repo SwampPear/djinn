@@ -5,7 +5,7 @@ INCLUDE = include
 INCLUDE_PATH = src
 SUB_DIR = src src/djinn/core
 
-CFLAGS = -std=c++17 -Wall -I $(INCLUDE) -I $(INCLUDE_PATH)
+CFLAGS = -std=c++17 -Wall -I $(INCLUDE) -I $(INCLUDE_PATH) -I/opt/homebrew/opt/openssl/include -L/opt/homebrew/opt/openssl/lib -lssl -lcrypto
 
 DATA_DIR = $(HOME)/Library/Application\ Support/djinn
 EXEC_DIR = /usr/local/bin/

@@ -13,10 +13,14 @@ int main() {
 
         // encoding
         std::string encoding_system_prompt = Djinn::fmt_prompt(context, nullptr, "/encoding/system.md");
+        std::string encoding_user_prompt = Djinn::fmt_prompt(context, nullptr, "/encoding/user.md");
 
-        std::cout << encoding_system_prompt << std::endl;
-       
+        std::string res = Djinn::prompt(encoding_system_prompt, encoding_user_prompt);
+
+        std::cout << res << std::endl;
+
         return EXIT_SUCCESS;
+
     } catch (const std::exception& e) {
         Djinn::log(Djinn::LogColor::RED, "ERROR", e.what());
 

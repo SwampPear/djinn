@@ -1,6 +1,0 @@
-{
-    "root": "test/",
-    "description": "write a function in python in bell_curve.py to make a matplotlibe bell graph.",
-    "stack": "python, matplotlib",
-    "environment": "Apple Silicon"
-}
