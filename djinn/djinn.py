@@ -8,20 +8,22 @@ import djinn.prompts as p
 
 load_dotenv()
 
-DEFAULT_CONFIG_FP = "config.json"
+# default config
+PROJECT_FILE = "djinn.json"
+DATA_DIR     = "~/Library/Application Support/djinn/"
+DJINN_DIR    = "/usr/local/bin"
 
 class Djinn:
     """
-    Handles task planning and execution.
+    Handles Djinn processes.
     """
-
 
     def __init__(self):
         """
         Initializes the Djinn instance.
         """
         self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-        self.config = read_json(DEFAULT_CONFIG_FP)
+        self.config = read_json(PROJECT_FILE)
 
         logp("djinn", "initialized")
 
