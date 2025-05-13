@@ -64,14 +64,29 @@ std::string inject_text(const std::string& prompt, const std::string& key, const
     return result;
 }
 
-std::string fmt_prompt(ExecutionContext context, PromptConfig config, const std::string& fp) {
+std::string fmt_prompt(ExecutionContext context, PromptConfig* config, const std::string& fp) {
     std::string prompt_fp = context.data + "/prompts/" + fp;
     std::string prompt = read_file(prompt_fp);
 
-    for (const auto& [key, value] : config) {
-        prompt = inject_text(prompt, "{" + key + "}", value);
+    // context injection (system)
+    std::vector<std::string> keys = {
+        "root",
+        "description",
+        "stack",
+        "environment"
+    };
+
+    for (const auto& key : keys) {
+        prompt = inject_text(prompt, "{" + key + "}", context[key]);
     }
 
+    // config injection (user)
+    if (config != nullptr) {
+        for (const auto& [key, value] : *config) {
+            prompt = inject_text(prompt, "{" + key + "}", value);
+        }
+    }
+    
     return prompt;
 }
 }  // namespace Djinn

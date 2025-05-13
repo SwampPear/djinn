@@ -93,6 +93,6 @@ std::string inject_text(const std::string& prompt, const std::string& key, const
  * @param fp The file path of the prompt relative to the data directory.
  * @return std::string The formatted prompt with placeholders replaced by config values.
  */
-std::string fmt_prompt(ExecutionContext context, PromptConfig config, const std::string& fp);
+std::string fmt_prompt(ExecutionContext context, PromptConfig* config, const std::string& fp);
 
 }  // namespace Djinn

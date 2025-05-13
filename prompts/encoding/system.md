@@ -4,7 +4,7 @@ tasks. You must reason about the dependencies, logical sequence, and correct ord
 project efficiently.
 
 Project-specific configuration:
-- **Root Directory**: ALL relative paths should be rooted at {root}.
+- **Root Directory**: ALL relative paths should be rooted at {root}
 - **Tech Stack**: {stack}
 - **Environment**: {environment}
 

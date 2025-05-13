@@ -6,9 +6,15 @@
 
 int main() {
     try {
-        Djinn::log(Djinn::LogColor::GREEN, "INFO", "Starting Djinn...");
+        // initialization
+        Djinn::log(Djinn::LogColor::GREEN, "INFO", "Starting Djinn");
 
-        Djinn::ExecutionContext exec_context = Djinn::get_execution_context();
+        Djinn::ExecutionContext context = Djinn::get_execution_context();
+
+        // encoding
+        std::string encoding_system_prompt = Djinn::fmt_prompt(context, nullptr, "/encoding/system.md");
+
+        std::cout << encoding_system_prompt << std::endl;
        
         return EXIT_SUCCESS;
     } catch (const std::exception& e) {
