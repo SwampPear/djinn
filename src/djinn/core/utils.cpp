@@ -17,21 +17,27 @@ std::string get_time() {
 }
 
 void log(LogColor color, const std::string& level, const std::string& message) {
+    if (level.length() > 8) {
+        throw std::runtime_error("Log level exceeds maximum length of 8 characters.");
+    }
     // format time
     std::string time = "\033[1m" + get_time() + "\033[0m";
 
     // format level
     std::string level_pre;
     switch(color) {
-        case LogColor::RED      : { level_pre = " \033[91m["; break; }
-        case LogColor::GREEN    : { level_pre = " \033[92m["; break; }
-        case LogColor::YELLOW   : { level_pre = " \033[93m["; break; }
+        case LogColor::RED      : { level_pre = "\033[91m["; break; }
+        case LogColor::GREEN    : { level_pre = "\033[92m["; break; }
+        case LogColor::YELLOW   : { level_pre = "\033[93m["; break; }
     }
 
     std::string fmt_level = level_pre + level + "]\033[0m";
 
+    std::string padding = "";
+    for (int i = 0; i < 8 - level.length(); i++) padding += " ";
+
     // formatted message
-    std::cout << time << " " << fmt_level << " " << message << std::endl;
+    std::cout << time << " " << fmt_level << padding << message << std::endl;
 }
 
 std::string read_file(const std::string& fp) {

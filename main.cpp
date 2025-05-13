@@ -13,13 +13,10 @@ int main() {
 
         // encoding
         Djinn::log(Djinn::LogColor::GREEN, "encoder", "starting task encoding");
-        Djinn::log(Djinn::LogColor::GREEN, "encoder", "prompting model");
 
-        std::string encoding_system_prompt = Djinn::fmt_prompt(context, nullptr, "/encoding/system.md");
-        std::string encoding_user_prompt = Djinn::fmt_prompt(context, nullptr, "/encoding/user.md");
-        nlohmann::json encoded_tasks = nlohmann::json::parse(Djinn::prompt(encoding_system_prompt, encoding_user_prompt));
+        nlohmann::json encoded_tasks = Djinn::encode(context);
 
-        Djinn::log(Djinn::LogColor::GREEN, "djinn", "response generated");
+        Djinn::log(Djinn::LogColor::GREEN, "djinn", "tasks generated");
 
         return EXIT_SUCCESS;
 
