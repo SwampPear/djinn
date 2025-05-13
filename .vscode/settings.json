@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "string": "cpp",
         "__locale": "cpp",
         "__threading_support": "cpp",
         "__verbose_abort": "cpp",
@@ -27,7 +28,6 @@
         "print": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
-        "string": "cpp",
         "string_view": "cpp",
         "tuple": "cpp",
         "typeinfo": "cpp",
@@ -53,6 +53,8 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "set": "cpp",
+        "unordered_set": "cpp"
     }
 }
