@@ -84,8 +84,6 @@ HTTPResponse send_request(const HTTPRequest& request) {
     req.body() = request.body;
     req.prepare_payload();
 
-    std::cout << req << std::endl;
-
     http::write(stream, req);
 
     beast::flat_buffer buffer;
@@ -128,8 +126,9 @@ std::string prompt(const std::string& user_prompt, const std::string& system_pro
 
     // parse response
     auto res_body = boost::beast::buffers_to_string(res.body().data());
-    std::cout << res_body << std::endl;
+    nlohmann::json json_response = nlohmann::json::parse(res_body);
+    std::string message = json_response["choices"][0]["message"]["content"];
 
-    return "";//nlohmann::json::parse(res_body)["choices"][0]["message"];
+    return message;
 }
 } // namespace Djinn
