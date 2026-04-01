@@ -4,3 +4,4 @@
 #include "djinn/core/utils.hpp"
 #include "djinn/core/prompt.hpp"
 #include "djinn/encoder/encoder.hpp"
+#include "djinn/executor/executor.hpp"

@@ -14,8 +14,8 @@ terminal-friendly.
 
 Each encoded task should be represented as a JSON object with the following fields:
 - "description": A concise explanation of what the task accomplishes.
-- "type": Either "input" (if the task involves reading or inspecting a file/resource), "output" (if it generates, 
-modifies, or produces something), or "test" (if a test condition must be passed before continuing)
+- "type": Either "input" (if the task involves reading a file and proceeding with context, input is NOT for testing) or "output" (if it generates, 
+modifies, or produces something)
 - "action": A shell command that can be executed directly in the terminal. Ensure that it is syntactically correct and 
 contextually appropriate for the given system.
 

@@ -28,14 +28,36 @@ system prompt here is saved for future use in prompting.
 ### Encoding
 The encoding prompt generates task nodes, which are executable as a state machine in the execution step. There are three different types of task nodes that may be assigned, ouput nodes, input nodes, and test nodes.
 
+#### Internode Communication Protocol
+
+```
+struct ExecutionContextBlock {
+  string command
+  string file
+  string context  // file contents, terminal reads, error output
+}
+```
+
 #### Ouput
 Ouput nodes simply execute a command.
 
-#### Input
-Input nodes wait for a read before transitioning to an ouput node.
+<p align="center">
+  <img src=".github/output_node_diagram.png" style="width: 75%; border-radius: 0.5rem;">
+</p>
 
-#### Test
-Test nodes wait for some testing condition to be met before 
+Here the Execution node takes a ExecutionContextBlock as input and attempts to
+execute it. If an error occurs, state transitions to the Resolution node, 
+wherein it prompts for a course of action and executes it. If the action is
+successful, then state transitions to next.
+
+#### Input
+Input nodes wait for a read before transitioning to an ouput node. If the read
+operation fails, state transitions to resolution mode, otherwise it transitions
+to an output node with updated context in the ExecutionContextBlock. 
+
+<p align="center">
+  <img src=".github/input_node_diagram.png" style="width: 75%; border-radius: 0.5rem;">
+</p>
 
 ## Executor
 The task state machine is executed in order of state transitions. It executes

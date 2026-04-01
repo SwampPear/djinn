@@ -1,5 +1,5 @@
 {
-    "description": "write a function in python in bell_curve.py to make a matplotlib bell graph.",
+    "description": "fix the function in bell_curve.py, it should be orange",
     "stack": "python, matplotlib",
     "environment": "Apple Silicon"
 }

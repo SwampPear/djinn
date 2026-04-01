@@ -18,6 +18,10 @@ int main() {
 
         Djinn::log(Djinn::LogColor::GREEN, "djinn", "tasks generated");
 
+        Djinn::log(Djinn::LogColor::GREEN, "djinn", "executing tasks");
+
+        Djinn::execute(encoded_tasks);
+
         return EXIT_SUCCESS;
 
     } catch (const std::exception& e) {
